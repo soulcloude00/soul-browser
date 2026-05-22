@@ -11,9 +11,20 @@
     --line-strong: rgba(20, 19, 15, 0.22);
     --accent: #d4400a;
   }
+
+  :root.dark {
+    --paper: #0c0b09;
+    --ink: #f5f3ee;
+    --muted: #a19f96;
+    --line: rgba(245, 243, 238, 0.12);
+    --line-strong: rgba(245, 243, 238, 0.25);
+    --accent: #ff6026;
+  }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01", "tnum";
     -webkit-font-smoothing: antialiased;
@@ -21,29 +32,38 @@
     letter-spacing: -0.011em;
     background: var(--paper);
     color: var(--ink);
+    transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   ::selection {
     background-color: var(--accent);
     color: #fff;
   }
+
   .tnum {
     font-variant-numeric: tabular-nums;
   }
+
   ::-webkit-scrollbar {
     width: 11px;
     height: 11px;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(20, 19, 15, 0.18);
+    background: color-mix(in srgb, var(--ink) 18%, transparent);
     border-radius: 999px;
     border: 3px solid transparent;
     background-clip: padding-box;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(20, 19, 15, 0.3);
+    background: color-mix(in srgb, var(--ink) 30%, transparent);
     background-clip: padding-box;
   }
 }
@@ -53,41 +73,48 @@
     text-wrap: balance;
   }
 
-  /* Light Swiss surfaces - solid white cards, hairline rules, no glass/glow */
+  /* Light/Dark Swiss surfaces - hairline rules, no glass/glow */
   .glass {
-    background: rgba(255, 255, 255, 0.65);
+    background: color-mix(in srgb, var(--paper) 65%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--line);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
   }
+
   .glass-strong {
-    background: rgba(252, 251, 248, 0.85);
+    background: color-mix(in srgb, var(--paper) 85%, transparent);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--line);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
   }
-  /* Card surface - solid paper-white panel with hairline border */
+
+  /* Card surface - solid panel with hairline border */
   .panel {
-    background: #fbfaf7;
+    background: color-mix(in srgb, var(--paper) 85%, var(--ink) 2%);
     border: 1px solid var(--line);
     transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   .panel:hover {
     border-color: var(--line-strong);
-    background: #ffffff;
+    background: color-mix(in srgb, var(--paper) 70%, var(--ink) 3%);
   }
+
   .glass-card {
-    background: #fbfaf7;
+    background: color-mix(in srgb, var(--paper) 90%, var(--ink) 1%);
     border: 1px solid var(--line);
     transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                 transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   .glass-card:hover {
     border-color: var(--line-strong);
-    background: #ffffff;
+    background: color-mix(in srgb, var(--paper) 80%, var(--ink) 2%);
   }
 
   /* Single accent */

@@ -15,55 +15,55 @@ import {
 const features = [
   {
     icon: Brain,
-    title: 'Local AI',
-    short: 'Codex-powered assistant running entirely on your machine.',
-    full: 'A built-in Codex assistant with browser automation, page summaries, clipboard analysis, and reader mode - all local, zero cloud. Supports Ollama and LM Studio.',
+    title: 'Local AI Assistant',
+    short: 'On-device LLMs for 100% private, offline assistance.',
+    full: 'A built-in Codex assistant with browser automation, smart page summaries, clipboard analysis, and reasoning controls. Works offline via Ollama or LM Studio. Zero telemetry leaves your machine.',
   },
   {
     icon: Zap,
     title: 'Metal Rendering',
-    short: 'Native Apple Silicon Metal for CEF.',
-    full: '40% less GPU memory usage, buttery 120Hz ProMotion scrolling, and hardware-accelerated video decode on Apple Silicon Macs.',
+    short: 'SwiftUI & AppKit native shell drawing directly to Metal.',
+    full: 'By embedding CEF rather than packing Electron, Soul achieves 40% less GPU memory consumption, butter-smooth 120Hz ProMotion scrolling, and hardware-accelerated video decode on Apple Silicon.',
   },
   {
     icon: Layout,
-    title: 'Vertical Tabs',
-    short: 'Right-hand sidebar with tree hierarchies.',
-    full: 'Workspace audio mixing, focus mode, tree hierarchies, and a command palette for instant tab search. Always visible, never cluttered.',
+    title: 'Right-Hand Tabs',
+    short: 'Right-hand sidebar with native workspace isolation.',
+    full: 'Keep your focus where it belongs. Features space-based tab groups, audio mixing, tree hierarchies, focus mode, and a global Command Palette (⌘K) to jump across sessions instantly.',
   },
   {
     icon: Shield,
-    title: 'Privacy First',
-    short: 'Declarative blocklist, Keychain, tracker blocking.',
-    full: 'Real-time privacy dashboard, native Keychain integration, per-site permissions, and a declarative blocklist engine that blocks before the request fires.',
+    title: 'Privacy Blocklist',
+    short: 'Request-level ad and tracker blocking.',
+    full: 'Our declarative blocking engine intercepts and drops analytics, tracking beacons, and ads before the web request is even fired. Upgrades pages load speed by up to 3x.',
   },
   {
     icon: Terminal,
-    title: 'Dev Tools',
-    short: 'Terminal sidebar, HTTP inspector, live console.',
-    full: 'Integrated terminal, HTTP request/response inspector, responsive layout canvas, JSON formatter, color picker, local SSL certificate manager, and web asset downloader.',
+    title: 'Cookie & Storage Editor',
+    short: 'Inspect and edit cookies and LocalStorage directly.',
+    full: 'A dedicated 380pt native side panel to quickly view, filter search, edit, or delete cookies, localStorage, and sessionStorage. No need to toggle full DevTools overlays for basic tweaks.',
   },
   {
-    icon: Gauge,
-    title: 'Performance',
-    short: 'Tab suspension, shared V8, hardware decode.',
-    full: 'Heuristic tab suspension, shared V8 context allocator, GC sweeper, resource preloader, and battery-aware throttling when unplugged.',
+    icon: Lock,
+    title: 'Fingerprint Protection',
+    short: 'Anti-fingerprinting via Canvas and WebGL noise.',
+    full: 'Protects your identity online by spoofing your browser plugins list, rounding screen dimension queries, spoofing WebGL vendor as Apple GPU, and injecting Canvas noise into rendering buffers.',
   },
   {
     icon: Eye,
     title: 'Semantic History',
-    short: 'Embedding-based natural language search.',
-    full: 'Local SQLite vector store with embedding-based search. Find that Rust article from Tuesday by typing exactly that. No cloud, no indexing services.',
+    short: 'Embedding-based natural language history search.',
+    full: 'A local SQLite vector store parses your reading history. Find that article from last week by searching context: "article about Rust MIR optimizer with the blue diagram". Offline and private.',
   },
   {
-    icon: Lock,
-    title: 'Native Security',
-    short: 'Keychain, LAN sync, SSL manager.',
-    full: 'Native Keychain Services, LAN sync via Bonjour, local SSL certificate manager, crash recovery, and cookie isolation by default.',
+    icon: Gauge,
+    title: 'HTTPS-Only & Session Rescue',
+    short: 'Strict HTTPS upgrading and crash recovery.',
+    full: 'Automatically forces insecure HTTP connections onto HTTPS. In the event of a system crash, a native session restore modal prompts you to restart fresh or resume your exact tab stack.',
   },
 ]
 
-function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number; key?: string }) {
+function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
   const [expanded, setExpanded] = useState(false)
@@ -78,17 +78,17 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
     >
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full h-full text-left relative p-5 rounded-2xl panel overflow-hidden hover:-translate-y-0.5 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-zinc-900/15"
+        className="w-full h-full text-left relative p-5 rounded-2xl panel overflow-hidden hover:-translate-y-0.5 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-orange-655/20"
       >
         <div className="relative">
           <div className="flex items-start justify-between mb-4">
             <div className="w-10 h-10 rounded-xl bg-orange-600/10 border border-orange-600/20 flex items-center justify-center transition-colors duration-300 group-hover:bg-orange-600/15">
               <feature.icon size={18} strokeWidth={1.75} className="text-orange-600" />
             </div>
-            <span className="font-mono text-[10px] text-zinc-400 tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+            <span className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500 tabular-nums">{String(index + 1).padStart(2, '0')}</span>
           </div>
-          <h3 className="font-display text-[15px] font-medium text-zinc-900 mb-1.5">{feature.title}</h3>
-          <p className="text-[12.5px] text-zinc-500 leading-[1.55]">{feature.short}</p>
+          <h3 className="font-display text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5 transition-colors">{feature.title}</h3>
+          <p className="text-[12.5px] text-zinc-500 dark:text-zinc-400 leading-[1.55] transition-colors">{feature.short}</p>
 
           <AnimatePresence>
             {expanded && (
@@ -99,14 +99,14 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="pt-3 mt-3 border-t border-zinc-900/10">
-                  <p className="text-[12.5px] text-zinc-600 leading-[1.65]">{feature.full}</p>
+                <div className="pt-3 mt-3 border-t border-zinc-900/10 dark:border-white/10 transition-colors">
+                  <p className="text-[12.5px] text-zinc-650 dark:text-zinc-450 leading-[1.65]">{feature.full}</p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div className="mt-3 flex items-center gap-1 text-[11px] text-zinc-500 group-hover:text-orange-600 transition-colors">
+          <div className="mt-3 flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 group-hover:text-orange-600 transition-colors">
             <span>{expanded ? 'Less' : 'Details'}</span>
             <ChevronRight size={12} className={`transition-transform duration-300 ${expanded ? 'rotate-90' : 'group-hover:translate-x-0.5'}`} />
           </div>
@@ -121,7 +121,7 @@ export default function Features() {
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="features" className="py-24 md:py-32">
+    <section id="features" className="py-24 md:py-32 bg-transparent border-t border-zinc-900/10 dark:border-white/10">
       <div className="max-w-5xl mx-auto px-6">
         <motion.div
           ref={headerRef}
@@ -130,11 +130,11 @@ export default function Features() {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mb-14"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] mb-5 text-balance">
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] dark:text-zinc-100 mb-5 text-balance transition-colors">
             Built for the way <span className="text-orange-600">you</span> work
           </h2>
-          <p className="text-base text-zinc-600 max-w-md leading-[1.6]">
-            Eight native systems, each crafted for macOS power users. Tap a card to expand.
+          <p className="text-base text-zinc-655 dark:text-zinc-400 max-w-md leading-[1.6] transition-colors">
+            Eight native subsystems, each crafted for macOS power users. Tap a card to expand details.
           </p>
         </motion.div>
 

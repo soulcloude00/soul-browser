@@ -1,33 +1,51 @@
-import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Bot, Code2, ShieldCheck, Sparkles, Terminal, Activity, Send } from 'lucide-react'
+import { useRef, useState, useEffect } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
+import { Bot, Code2, ShieldCheck, Sparkles, Send, Check, Trash2, Edit2, AlertTriangle, Shield } from 'lucide-react'
 
 const tabs = [
   {
     id: 'ai',
-    label: 'AI',
+    label: 'Local AI',
     icon: Bot,
     title: 'Your browser thinks with you',
     description: 'A local Codex assistant that reads pages, automates actions, analyzes your clipboard, and summarizes articles - all without a single byte leaving your machine.',
-    highlights: ['Local LLM configurator (Ollama / LM Studio)', 'In-page smart rewrite tool', 'AI-assisted form filler', 'Reader mode summary engine', 'Voice control & transcription'],
+    highlights: [
+      'Local LLM integrations (Ollama, LM Studio)',
+      'Adjustable Reasoning Effort (Low, Med, High)',
+      'In-page smart rewrite toolbar',
+      'Reader mode summary engine',
+      '100% private: no data sent to cloud servers'
+    ],
     preview: 'ai',
   },
   {
     id: 'dev',
-    label: 'Dev',
+    label: 'Cookie Editor',
     icon: Code2,
-    title: 'Built for makers',
-    description: 'A browser that understands developers. Terminal sidebar, HTTP inspector, responsive canvas, JSON formatter, color picker, and a live console - all natively integrated.',
-    highlights: ['Integrated terminal sidebar', 'HTTP request/response inspector', 'Responsive layout canvas', 'Local SSL certificate manager', 'Web asset downloader'],
+    title: 'Built-in storage control',
+    description: 'A first-class utility panel for developers. Directly view, filter, modify, or delete cookies, localStorage, and sessionStorage keys for any tab in real time.',
+    highlights: [
+      '380pt native sidebar layout (⌘, to toggle)',
+      'Live search filter for storage keys',
+      'One-click values editing and cookie injection',
+      'Session isolation per browser tab container',
+      'Secure credential state visualizer'
+    ],
     preview: 'dev',
   },
   {
     id: 'privacy',
-    label: 'Privacy',
+    label: 'Privacy Shield',
     icon: ShieldCheck,
     title: 'Your data stays yours',
-    description: 'Declarative blocklist engine, real-time privacy dashboard, and native Keychain integration. Semantic history lives in a local SQLite vector store.',
-    highlights: ['Declarative blocklist engine', 'Real-time privacy dashboard', 'Native Keychain storage', 'LAN sync via Bonjour', 'Offline AI translation'],
+    description: 'Declarative blocklist engine, real-time privacy dashboard, and fingerprint randomization protecting Canvas and WebGL contexts.',
+    highlights: [
+      'HTTPS-Only automatic redirection upgrades',
+      'Canvas entropy noise perturbations',
+      'WebGL renderer vendor spoofing (Apple GPU)',
+      'Telemetry bypass & tracking scripts blocklist',
+      'Local SQLite vector store for semantic history'
+    ],
     preview: 'privacy',
   },
 ]
@@ -49,7 +67,9 @@ function findResponse(input: string) {
 }
 
 function PreviewBox({ type }: { type: string }) {
+  // --- AI SIMULATOR STATE ---
   const [aiInput, setAiInput] = useState('')
+  const [reasoning, setReasoning] = useState<'low' | 'med' | 'high'>('med')
   const [aiMessages, setAiMessages] = useState<{role: 'user'|'ai', text: string}[]>([
     { role: 'user', text: 'Summarize this Rust article' },
     { role: 'ai', text: aiResponses.summarize },
@@ -62,30 +82,96 @@ function PreviewBox({ type }: { type: string }) {
     setAiMessages(prev => [...prev, { role: 'user', text: userMsg }])
     setAiInput('')
     setAiTyping(true)
+
+    // Simulate thinking delay based on reasoning effort
+    const delay = reasoning === 'low' ? 400 : reasoning === 'med' ? 800 : 1500
     setTimeout(() => {
       setAiMessages(prev => [...prev, { role: 'ai', text: findResponse(userMsg) }])
       setAiTyping(false)
-    }, 800)
+    }, delay)
+  }
+
+  // --- COOKIE EDITOR STATE ---
+  const [cookies, setCookies] = useState([
+    { key: 'session_user', val: 'alice_dev', type: 'cookie' },
+    { key: 'is_admin', val: 'true', type: 'cookie' },
+    { key: 'theme', val: 'system', type: 'localStorage' },
+  ])
+  const [editingKey, setEditingKey] = useState<string | null>(null)
+  const [editValue, setEditValue] = useState('')
+
+  const handleEditClick = (key: string, currentVal: string) => {
+    setEditingKey(key)
+    setEditValue(currentVal)
+  }
+
+  const handleSaveCookie = (key: string) => {
+    setCookies(prev => prev.map(c => c.key === key ? { ...c, val: editValue } : c))
+    setEditingKey(null)
+  }
+
+  const handleDeleteCookie = (key: string) => {
+    setCookies(prev => prev.filter(c => c.key !== key))
+  }
+
+  // Derived user status from cookie state
+  const sessionUser = cookies.find(c => c.key === 'session_user')?.val
+  const isAdmin = cookies.find(c => c.key === 'is_admin')?.val === 'true'
+
+  let sessionStatus = 'Session Expired'
+  let sessionColor = 'text-rose-400 bg-rose-500/10 border-rose-500/20'
+  if (sessionUser) {
+    if (isAdmin) {
+      sessionStatus = `Admin: ${sessionUser}`
+      sessionColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+    } else {
+      sessionStatus = `User: ${sessionUser}`
+      sessionColor = 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+    }
+  }
+
+  // --- PRIVACY SHIELD STATE ---
+  const [httpsEnabled, setHttpsEnabled] = useState(true)
+  const [blockedCount, setBlockedCount] = useState(847)
+  const [triggeringTrackers, setTriggeringTrackers] = useState(false)
+
+  const handleTriggerTrackers = () => {
+    setBlockedCount(prev => prev + 3)
+    setTriggeringTrackers(true)
+    setTimeout(() => setTriggeringTrackers(false), 300)
   }
 
   if (type === 'ai') {
     return (
-      <div className="h-full flex flex-col p-5">
-        <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-white/[0.04]">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400/20 to-orange-600/10 border border-orange-500/15 flex items-center justify-center">
-            <Sparkles size={12} className="text-orange-400" />
+      <div className="h-full flex flex-col p-4 text-white">
+        <div className="flex items-center gap-2 mb-3 pb-2.5 border-b border-white/[0.06]">
+          <div className="w-6 h-6 rounded-full bg-orange-500/15 border border-orange-500/30 flex items-center justify-center">
+            <Sparkles size={11} className="text-orange-400" />
           </div>
           <div>
-            <div className="text-[13px] font-medium text-white/80">Soul</div>
-            <div className="text-[10px] text-slate-600">Running locally on-device</div>
+            <div className="text-[12px] font-semibold">Local AI Assistant</div>
+            <div className="text-[9px] text-zinc-500">Ollama / LM Studio Bridge</div>
           </div>
-          <div className="ml-auto flex items-center gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[10px] text-slate-600">Online</span>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="text-[9px] text-zinc-400 font-mono">Reasoning:</span>
+            <div className="flex rounded border border-white/10 overflow-hidden text-[9px] font-mono">
+              {(['low', 'med', 'high'] as const).map(level => (
+                <button
+                  key={level}
+                  onClick={() => setReasoning(level)}
+                  className={`px-1.5 py-0.5 capitalize cursor-pointer transition-colors ${
+                    reasoning === level ? 'bg-orange-600 text-white' : 'bg-white/5 text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto space-y-3 min-h-0">
+        {/* Message Panel */}
+        <div className="flex-1 overflow-y-auto space-y-2.5 min-h-0 pr-1 select-none scrollbar-thin">
           <AnimatePresence initial={false}>
             {aiMessages.map((msg, i) => (
               <motion.div
@@ -95,12 +181,12 @@ function PreviewBox({ type }: { type: string }) {
                 className={`flex gap-2 ${msg.role === 'ai' ? 'justify-end' : ''}`}
               >
                 {msg.role === 'user' && (
-                  <div className="w-5 h-5 rounded-full bg-white/[0.05] flex-shrink-0 mt-0.5" />
+                  <div className="w-5 h-5 rounded-full bg-white/10 flex-shrink-0 mt-0.5 flex items-center justify-center text-[9px] text-zinc-300">U</div>
                 )}
-                <div className={`max-w-[88%] px-3 py-2 text-[11px] leading-relaxed rounded-xl ${
+                <div className={`max-w-[85%] px-3 py-2 text-[11px] leading-relaxed rounded-xl ${
                   msg.role === 'ai'
-                    ? 'bg-orange-500/[0.06] text-slate-400 rounded-tr-sm border border-orange-500/[0.06]'
-                    : 'bg-white/[0.03] text-slate-400 rounded-tl-sm'
+                    ? 'bg-orange-500/[0.06] text-zinc-300 rounded-tr-sm border border-orange-500/10'
+                    : 'bg-white/[0.04] text-zinc-300 rounded-tl-sm'
                 }`}>
                   {msg.text}
                 </div>
@@ -108,34 +194,36 @@ function PreviewBox({ type }: { type: string }) {
             ))}
             {aiTyping && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end">
-                <div className="bg-orange-500/[0.06] rounded-xl rounded-tr-sm px-3 py-2 border border-orange-500/[0.06]">
-                  <div className="flex gap-1">
-                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="bg-orange-500/[0.06] rounded-xl rounded-tr-sm px-3 py-2 border border-orange-500/10 flex items-center gap-2">
+                  <div className="flex gap-0.5">
+                    <span className="w-1 h-1 rounded-full bg-zinc-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1 h-1 rounded-full bg-zinc-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1 h-1 rounded-full bg-zinc-400 animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
+                  <span className="text-[9px] font-mono text-zinc-500">
+                    {reasoning === 'high' ? 'thinking (42t/s)...' : 'local...'}
+                  </span>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        <div className="mt-3 pt-3 border-t border-white/[0.04]">
-          <div className="flex items-center gap-2 bg-white/[0.02] rounded-lg px-3 py-2">
-            <input
-              value={aiInput}
-              onChange={e => setAiInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleAiSend()}
-              placeholder="Ask anything..."
-              className="flex-1 bg-transparent text-[11px] text-slate-300 placeholder:text-slate-700 outline-none"
-            />
-            <button
-              onClick={handleAiSend}
-              className="text-slate-600 hover:text-orange-400 transition-colors"
-            >
-              <Send size={12} />
-            </button>
-          </div>
+        {/* Input */}
+        <div className="mt-2.5 pt-2 border-t border-white/[0.06] flex items-center gap-2">
+          <input
+            value={aiInput}
+            onChange={e => setAiInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleAiSend()}
+            placeholder="Summarize this... (try typing 'privacy' or 'tabs')"
+            className="flex-1 bg-white/[0.03] border border-white/10 rounded-lg px-2.5 py-1.5 text-[11px] text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-orange-500/40 transition-colors"
+          />
+          <button
+            onClick={handleAiSend}
+            className="w-8 h-8 rounded-lg bg-orange-600 hover:bg-orange-700 flex items-center justify-center text-white transition-colors cursor-pointer active:scale-95"
+          >
+            <Send size={11} />
+          </button>
         </div>
       </div>
     )
@@ -143,65 +231,172 @@ function PreviewBox({ type }: { type: string }) {
 
   if (type === 'dev') {
     return (
-      <div className="h-full flex flex-col p-5 font-mono text-[11px]">
-        <div className="flex items-center gap-2 mb-3 text-slate-500 text-[10px] uppercase tracking-wider">
-          <Terminal size={11} />
-          <span>Terminal</span>
-          <span className="ml-auto text-slate-700">zsh</span>
-        </div>
-        <div className="space-y-1 flex-1 overflow-hidden">
-          <div className="text-slate-600"><span className="text-orange-400/80">➜</span> <span className="text-slate-500">~</span> curl -I https://api.github.com</div>
-          <div className="text-slate-600 pl-4">HTTP/2 200</div>
-          <div className="text-slate-600 pl-4">server: GitHub.com</div>
-          <div className="text-slate-600 pl-4">content-type: application/json</div>
-          <div className="text-slate-600 pl-4">x-ratelimit-limit: 60</div>
-          <div className="text-slate-600 pl-4">...</div>
-          <div className="text-slate-600 mt-2"><span className="text-orange-400/80">➜</span> <span className="text-slate-500">~</span> <span className="animate-pulse text-slate-500">█</span></div>
-        </div>
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          {[
-            { val: '200ms', label: 'Latency' },
-            { val: '12KB', label: 'Size' },
-            { val: 'H2', label: 'Protocol' },
-          ].map((s) => (
-            <div key={s.label} className="bg-white/[0.02] rounded-lg p-2 text-center border border-white/[0.03]">
-              <div className="text-orange-400/90 font-semibold text-[12px] tabular-nums">{s.val}</div>
-              <div className="text-[10px] text-slate-700">{s.label}</div>
+      <div className="h-full flex flex-col p-4 text-white select-none">
+        <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-white/[0.06]">
+          <div>
+            <div className="text-[12px] font-semibold flex items-center gap-1">
+              <Code2 size={13} className="text-orange-500" />
+              <span>Cookie & LocalStorage Editor</span>
             </div>
-          ))}
+            <div className="text-[9px] text-zinc-500">Native Tab Isolated Storage</div>
+          </div>
+          <span className={`text-[9.5px] font-mono px-2 py-0.5 rounded border transition-all duration-300 ${sessionColor}`}>
+            {sessionStatus}
+          </span>
+        </div>
+
+        {/* Cookie list */}
+        <div className="flex-1 overflow-y-auto space-y-1.5 min-h-0 pr-1 scrollbar-thin">
+          <div className="grid grid-cols-[1fr_1.2fr_0.8fr] gap-2 px-2 py-1 text-[9.5px] font-mono font-semibold text-zinc-500 uppercase">
+            <span>Key</span>
+            <span>Value</span>
+            <span className="text-right">Actions</span>
+          </div>
+          <div className="space-y-1.5 divide-y divide-white/[0.03] text-[10.5px] font-mono">
+            {cookies.map(cookie => (
+              <div key={cookie.key} className="grid grid-cols-[1fr_1.2fr_0.8fr] gap-2 px-2 pt-1.5 items-center text-zinc-300">
+                <span className="truncate text-zinc-400 font-semibold" title={cookie.key}>{cookie.key}</span>
+                {editingKey === cookie.key ? (
+                  <input
+                    value={editValue}
+                    onChange={e => setEditValue(e.target.value)}
+                    onBlur={() => handleSaveCookie(cookie.key)}
+                    onKeyDown={e => e.key === 'Enter' && handleSaveCookie(cookie.key)}
+                    autoFocus
+                    className="bg-zinc-800 border border-orange-500/40 rounded px-1 text-[10.5px] text-zinc-100 outline-none w-full"
+                  />
+                ) : (
+                  <span
+                    onClick={() => handleEditClick(cookie.key, cookie.val)}
+                    className="truncate hover:underline cursor-pointer text-emerald-400 hover:text-emerald-300 font-medium"
+                    title={cookie.val}
+                  >
+                    {cookie.val}
+                  </span>
+                )}
+                <div className="flex items-center justify-end gap-2 text-right">
+                  <button
+                    onClick={() => handleEditClick(cookie.key, cookie.val)}
+                    className="text-zinc-500 hover:text-orange-400 p-0.5 cursor-pointer"
+                    title="Edit Row"
+                  >
+                    <Edit2 size={10} />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteCookie(cookie.key)}
+                    className="text-zinc-500 hover:text-rose-400 p-0.5 cursor-pointer"
+                    title="Delete Row"
+                  >
+                    <Trash2 size={10} />
+                  </button>
+                </div>
+              </div>
+            ))}
+            {cookies.length === 0 && (
+              <div className="text-center py-6 text-zinc-600 text-[11px] font-sans">
+                Storage is empty. Set credentials to restore session.
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-3 pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[9px] text-zinc-500">
+          <span>Click a value to quick-edit. Changes update user state mock.</span>
+          {cookies.length < 3 && (
+            <button
+              onClick={() => setCookies([
+                { key: 'session_user', val: 'alice_dev', type: 'cookie' },
+                { key: 'is_admin', val: 'true', type: 'cookie' },
+                { key: 'theme', val: 'system', type: 'localStorage' },
+              ])}
+              className="text-orange-500 hover:underline cursor-pointer"
+            >
+              Reset Cookies
+            </button>
+          )}
         </div>
       </div>
     )
   }
 
+  // --- PRIVACY SHIELD PREVIEW ---
   return (
-    <div className="h-full flex flex-col p-5">
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.04]">
-        <div className="flex items-center gap-2">
-          <ShieldCheck size={14} className="text-emerald-400/80" />
-          <span className="text-[13px] font-medium text-white/80">Privacy</span>
-        </div>
-        <span className="text-[10px] text-emerald-400/80 bg-emerald-500/[0.08] px-2 py-0.5 rounded-full border border-emerald-500/10">Protected</span>
-      </div>
-      <div className="space-y-2 flex-1">
-        {[
-          { label: 'Trackers blocked', value: '847', color: 'text-rose-400/80', bg: 'bg-rose-500/[0.06]' },
-          { label: 'Cookies secured', value: '12', color: 'text-amber-400/80', bg: 'bg-amber-500/[0.06]' },
-          { label: 'HTTPS upgrades', value: '203', color: 'text-emerald-400/80', bg: 'bg-emerald-500/[0.06]' },
-        ].map((stat) => (
-          <div key={stat.label} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/[0.03]">
-            <div className="flex items-center gap-2.5">
-              <div className={`w-7 h-7 rounded-lg ${stat.bg} flex items-center justify-center`}>
-                <Activity size={12} className={stat.color} />
-              </div>
-              <span className="text-[12px] text-slate-400">{stat.label}</span>
-            </div>
-            <span className="text-[13px] font-semibold text-white/80">{stat.value}</span>
+    <div className="h-full flex flex-col p-4 text-white select-none">
+      <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-white/[0.06]">
+        <div>
+          <div className="text-[12px] font-semibold flex items-center gap-1.5">
+            <ShieldCheck size={14} className="text-emerald-400" />
+            <span>Active Privacy Shield</span>
           </div>
-        ))}
+          <div className="text-[9px] text-zinc-500">On-device active filtration</div>
+        </div>
+        <button
+          onClick={handleTriggerTrackers}
+          className={`text-[9.5px] font-mono px-2 py-0.5 rounded border border-orange-500/25 bg-orange-600/10 text-orange-400 hover:bg-orange-600/20 active:scale-95 transition-all duration-300 cursor-pointer ${
+            triggeringTrackers ? 'scale-[1.05]' : ''
+          }`}
+        >
+          {triggeringTrackers ? 'Tracking Blocked!' : 'Test Tracker Block'}
+        </button>
       </div>
-      <div className="mt-3 p-3 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/[0.06]">
-        <div className="text-[11px] text-emerald-400/70">No data sent to external servers in this session.</div>
+
+      {/* Grid status */}
+      <div className="grid grid-cols-2 gap-2.5 flex-1 min-h-0 items-stretch">
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-3 flex flex-col justify-between">
+          <div className="text-[10px] text-zinc-500 font-mono uppercase tracking-tight">HTTPS Upgrade Engine</div>
+          <div className="flex items-center justify-between gap-1 mt-1">
+            <span className="text-[11.5px] font-semibold text-zinc-200">HTTPS-Only Mode</span>
+            <button
+              onClick={() => setHttpsEnabled(!httpsEnabled)}
+              className={`w-7 h-4 rounded-full p-0.5 transition-colors cursor-pointer ${httpsEnabled ? 'bg-emerald-600' : 'bg-zinc-700'}`}
+            >
+              <div className={`w-3 h-3 rounded-full bg-white transition-transform ${httpsEnabled ? 'translate-x-3' : 'translate-x-0'}`} />
+            </button>
+          </div>
+          <div className="mt-2.5 py-1 px-1.5 rounded bg-[#100f0d] border border-white/[0.04] font-mono text-[9px] text-zinc-400 flex items-center gap-1.5">
+            {httpsEnabled ? (
+              <>
+                <Check size={9} className="text-emerald-400" />
+                <span className="text-emerald-400">https://</span>
+                <span className="truncate">docs.soul.dev</span>
+              </>
+            ) : (
+              <>
+                <AlertTriangle size={9} className="text-rose-400" />
+                <span className="text-rose-400">http://</span>
+                <span className="truncate">docs.soul.dev</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl p-3 flex flex-col justify-between">
+          <div className="text-[10px] text-zinc-500 font-mono uppercase tracking-tight">Blocked Analytics</div>
+          <div className="mt-1">
+            <div className="text-2xl font-bold text-orange-400 tabular-nums">{blockedCount}</div>
+            <div className="text-[9px] text-zinc-400 mt-0.5">Trackers and scripts filtered</div>
+          </div>
+          <div className="mt-2 text-[9px] text-zinc-500 font-mono flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>Layer-0 filter: active</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Fingerprinting block */}
+      <div className="mt-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.05] space-y-1.5">
+        <div className="text-[9.5px] font-mono text-zinc-400 uppercase tracking-tight flex items-center gap-1">
+          <Shield size={10} className="text-orange-500" />
+          <span>Fingerprint Randomization Details</span>
+        </div>
+        <div className="grid grid-cols-[1.2fr_1.8fr] gap-x-2 gap-y-0.5 text-[9.5px] font-mono">
+          <span className="text-zinc-500">WebGL Renderer:</span>
+          <span className="text-zinc-300 truncate font-semibold">Apple GPU (Apple Inc.)</span>
+          <span className="text-zinc-500">Canvas Entropy:</span>
+          <span className="text-orange-400 truncate">Noise added (+1px jitter)</span>
+          <span className="text-zinc-500">Screen Size:</span>
+          <span className="text-zinc-300">Rounded to nearest 10px</span>
+        </div>
       </div>
     </div>
   )
@@ -212,10 +407,21 @@ export default function Showcase() {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const [activeTab, setActiveTab] = useState('ai')
 
+  useEffect(() => {
+    const handleSetTab = (e: Event) => {
+      const customEvent = e as CustomEvent<string>
+      if (customEvent.detail) {
+        setActiveTab(customEvent.detail)
+      }
+    }
+    window.addEventListener('soul-set-showcase-tab', handleSetTab)
+    return () => window.removeEventListener('soul-set-showcase-tab', handleSetTab)
+  }, [])
+
   const active = tabs.find((t) => t.id === activeTab)!
 
   return (
-    <section id="showcase" className="py-24 md:py-32">
+    <section id="showcase" className="py-24 md:py-32 relative">
       <div className="max-w-5xl mx-auto px-6">
         <motion.div
           ref={ref}
@@ -224,11 +430,11 @@ export default function Showcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-4 text-balance">
-            Three <span className="text-orange-400">pillars</span>
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-zinc-900 dark:text-zinc-100 mb-4 text-balance transition-colors">
+            Three <span className="text-orange-600">Pillars</span> of Soul
           </h2>
-          <p className="text-base text-slate-400 max-w-lg mx-auto leading-[1.6]">
-            Try the live AI demo. Type a message and watch Soul respond, simulated locally.
+          <p className="text-base text-zinc-600 dark:text-zinc-400 max-w-lg mx-auto leading-[1.6]">
+            Try our interactive feature simulations below. Experience Soul\'s developer utilities and local AI right from the page.
           </p>
         </motion.div>
 
@@ -240,15 +446,15 @@ export default function Showcase() {
         >
           {/* Left: Tab content */}
           <div className="space-y-4">
-            <div className="flex gap-1.5 p-1 rounded-xl bg-zinc-900/[0.04] border border-zinc-900/10">
+            <div className="flex gap-1.5 p-1 rounded-xl bg-zinc-900/[0.04] dark:bg-zinc-50/[0.04] border border-zinc-900/10 dark:border-white/10">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-900/15 ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-300 active:scale-[0.98] focus:outline-none cursor-pointer ${
                     activeTab === tab.id
-                      ? 'bg-white text-[#14130f] shadow-[0_2px_8px_-4px_rgba(20,19,15,0.25)]'
-                      : 'text-zinc-500 hover:text-zinc-800'
+                      ? 'bg-white dark:bg-[#1a1916] text-[#14130f] dark:text-[#f5f3ee] shadow-[0_2px_8px_-4px_rgba(20,19,15,0.25)] dark:shadow-[0_2px_8px_-4px_rgba(0,0,0,0.5)] border border-zinc-950/5 dark:border-white/5'
+                      : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
                   }`}
                 >
                   <tab.icon size={13} />
@@ -264,15 +470,15 @@ export default function Showcase() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25 }}
-                className="space-y-4"
+                className="space-y-4 text-zinc-850 dark:text-zinc-200"
               >
-                <h3 className="font-display text-xl font-semibold text-[#14130f]">{active.title}</h3>
-                <p className="text-[13px] text-zinc-600 leading-[1.7]">{active.description}</p>
-                <ul className="space-y-2 pt-1">
+                <h3 className="font-display text-xl font-semibold text-zinc-900 dark:text-zinc-100">{active.title}</h3>
+                <p className="text-[13px] text-zinc-650 dark:text-zinc-400 leading-[1.7]">{active.description}</p>
+                <ul className="space-y-2 pt-1 font-medium">
                   {active.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2 text-[12px] text-zinc-600">
-                      <div className="w-[4px] h-[4px] rounded-full bg-orange-600 flex-shrink-0" />
-                      {h}
+                    <li key={h} className="flex items-center gap-2.5 text-[12px] text-zinc-600 dark:text-zinc-400">
+                      <div className="w-[4px] h-[4px] rounded-full bg-orange-650 dark:bg-orange-500 flex-shrink-0" />
+                      <span>{h}</span>
                     </li>
                   ))}
                 </ul>
@@ -282,7 +488,7 @@ export default function Showcase() {
 
           {/* Right: Preview - dark device screen on the light page */}
           <div className="relative">
-            <div className="relative rounded-2xl border border-zinc-900/10 bg-[#14130f] overflow-hidden shadow-[0_30px_60px_-24px_rgba(20,19,15,0.4)] h-[360px]">
+            <div className="relative rounded-2xl border border-zinc-900/10 dark:border-white/10 bg-[#14130f] dark:bg-[#151412] overflow-hidden shadow-[0_30px_60px_-24px_rgba(20,19,15,0.4)] dark:shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)] h-[360px] transition-colors duration-300">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
