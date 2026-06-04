@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>New Tab</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #09090b 0%, #111 50%, #020205 100%);
+      --fg: #f4f4f5;
+      --fg-muted: #a1a1aa;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(255, 255, 255, 0.25);
+      --card-bg: rgba(20, 20, 23, 0.45);
+      --card-hover: rgba(255, 255, 255, 0.05);
+      --accent: #6d28d9;
+      --accent-glow: rgba(109, 40, 217, 0.3);
+      --radius: 16px;
+      --glass-blur: 24px;
+    }
+    
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+        --fg: #0f172a;
+        --fg-muted: #64748b;
+        --border: rgba(15, 23, 42, 0.08);
+        --border-focus: rgba(15, 23, 42, 0.25);
+        --card-bg: rgba(255, 255, 255, 0.55);
+        --card-hover: rgba(15, 23, 42, 0.03);
+        --accent: #7c3aed;
+        --accent-glow: rgba(124, 58, 237, 0.15);
+        --radius: 16px;
+        --glass-blur: 24px;
+      }
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+    
+    html, body { 
+      height: 100%; 
+      background: var(--bg-gradient);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Mesh Animation */
+    .ambient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .ambient-bubble {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      animation: float 25s infinite alternate ease-in-out;
+    }
+
+    .bubble-1 {
+      top: 10%;
+      left: 15%;
+      width: 400px;
+      height: 400px;
+      background: var(--accent);
+    }
+
+    .bubble-2 {
+      bottom: 15%;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: #3b82f6;
+      animation-delay: -5s;
+      animation-duration: 30s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(80px, 50px) scale(1.1); }
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 24px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      z-index: 1;
+    }
+
+    /* Top Greeting Row */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 4px;
+    }
+
+    .greeting-title {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .greeting-subtitle {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-top: 4px;
+    }
+
+    .clock-container {
+      text-align: right;
+    }
+
+    .clock-time {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock-date {
+      font-size: 12px;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 56px;
+      padding: 0 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      color: var(--fg);
+      font-size: 16px;
+      outline: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    }
+    
+    .search-input::placeholder { 
+      color: var(--fg-muted); 
+    }
+    
+    .search-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 820px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Speed Dial Grid */
+    .shortcuts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .shortcut-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--fg);
+      background: rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .shortcut-card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+
+    .shortcut-card.dragging {
+      opacity: 0.4;
+      border: 1px dashed var(--accent);
+    }
+
+    .shortcut-card.drag-over {
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .speed-dial-edit-btn {
+      margin-left: auto;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--fg-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .speed-dial-edit-btn:hover {
+      border-color: var(--border-focus);
+      color: var(--fg);
+    }
+    
+    .speed-dial-edit-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .speed-dial-add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      color: var(--fg-muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      min-height: 60px;
+    }
+    
+    .speed-dial-add:hover {
+      border-color: var(--border-focus);
+      color: var(--fg);
+      background: var(--card-hover);
+    }
+
+    .speed-dial-remove {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: white;
+      border: none;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 2;
+    }
+    
+    .speed-dial-remove:hover {
+      background: #dc2626;
+    }
+
+    .shortcut-card {
+      position: relative;
+    }
+    
+    body.editing .speed-dial-remove {
+      display: flex;
+    }
+    
+    body.editing .speed-dial-add {
+      display: none;
+    }
+
+    .speed-dial-favicon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .shortcut-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .shortcut-name {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .shortcut-url {
+      font-size: 11px;
+      color: var(--fg-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* System Stats Card */
+    .stats-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stat-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .stat-label {
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--fg-muted);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .net-stats {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .net-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .net-label {
+      font-size: 10px;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .net-value {
+      font-size: 14px;
+      font-weight: 600;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    /* Bottom Widgets Grid (Weather & Quick Notes) */
+    .widgets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 768px) {
+      .widgets-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Weather Widget */
+    .weather-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .weather-icon-wrapper {
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.05);
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+    }
+
+    .weather-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .weather-temp {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .weather-desc {
+      font-size: 13px;
+      color: var(--fg-muted);
+      text-transform: capitalize;
+    }
+
+    /* Quick Notes Widget */
+    .notes-textarea {
+      width: 100%;
+      height: 90px;
+      background: rgba(0,0,0,0.15);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--fg);
+      font-size: 13px;
+      resize: none;
+      outline: none;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .notes-textarea:focus {
+      border-color: var(--border-focus);
+      background: rgba(0,0,0,0.25);
+    }
+
+    /* History search overlay */
+    .history-results {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      z-index: 100;
+      max-height: 300px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .history-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: var(--fg);
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .history-row:last-child {
+      border-bottom: none;
+    }
+
+    .history-row:hover, .history-row:focus {
+      background: var(--card-hover);
+      outline: none;
+    }
+
+    .history-title {
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 480px;
+    }
+
+    .history-url {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      color: var(--fg-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 320px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient bubbles -->
+  <div class="ambient-bg">
+    <div class="ambient-bubble bubble-1"></div>
+    <div class="ambient-bubble bubble-2"></div>
+  </div>
+  
+  <div class="container">
+    
+    <!-- Header Row -->
+    <div class="header">
+      <div>
+        <div class="greeting-title" id="greeting">Hello</div>
+        <div class="greeting-subtitle">Welcome back to Soul.</div>
+      </div>
+      <div class="clock-container">
+        <div class="clock-time" id="time">--:--</div>
+        <div class="clock-date" id="date">--</div>
+      </div>
+    </div>
+
+    <!-- Search Input Wrapper -->
+    <div class="search-wrapper">
+      <form id="search-form" action="https://www.google.com/search" method="get" autocomplete="off">
+        <input class="search-input" id="search-input" name="q" type="text"
+               placeholder="Search or type a URL..." aria-label="Search" autofocus />
+      </form>
+      <div class="history-results" id="history-results"></div>
+    </div>
+
+    <!-- Main Grid Dashboard -->
+    <div class="grid">
+      
+      <!-- Speed Dial Card -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          Speed Dial
+          <button class="speed-dial-edit-btn" id="speed-dial-edit-btn" onclick="toggleEditMode()" title="Edit speed dial">Edit</button>
+        </div>
+        <div class="shortcuts" id="speed-dial-grid">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+
+      <!-- System Stats Card -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+          System Monitor
+        </div>
+        <div class="stats-container">
+          <!-- CPU Stats -->
+          <div class="stat-row">
+            <div class="stat-meta">
+              <span class="stat-label">CPU Load</span>
+              <span class="stat-value" id="cpu-val">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" id="cpu-bar"></div>
+            </div>
+          </div>
+
+          <!-- Battery Stats -->
+          <div class="stat-row">
+            <div class="stat-meta">
+              <span class="stat-label">Battery Status</span>
+              <span class="stat-value" id="bat-val">--</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar" id="bat-bar"></div>
+            </div>
+          </div>
+
+          <!-- Network Speeds -->
+          <div class="net-stats">
+            <div class="net-box">
+              <span class="net-label">Download Speed</span>
+              <span class="net-value" id="net-down">0.0 KB/s</span>
+            </div>
+            <div class="net-box" style="text-align: right;">
+              <span class="net-label">Upload Speed</span>
+              <span class="net-value" id="net-up">0.0 KB/s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Widgets Grid (Weather & Quick Notes) -->
+    <div class="widgets-grid">
+      
+      <!-- Weather Widget -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path><circle cx="12" cy="12" r="4"></circle></svg>
+          Local Weather
+        </div>
+        <div class="weather-container">
+          <div class="weather-icon-wrapper" id="weather-icon">☀️</div>
+          <div class="weather-info">
+            <div class="weather-temp" id="weather-temp">--°C</div>
+            <div class="weather-desc" id="weather-desc">Loading weather...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Notes Widget -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Quick Notes
+        </div>
+        <textarea class="notes-textarea" id="notes-textarea" placeholder="Jot down some quick notes here... (auto-saved)"></textarea>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function updateGreeting() {
+      const hours = new Date().getHours();
+      let greeting = "Welcome";
+      if (hours < 12) greeting = "Good morning";
+      else if (hours < 17) greeting = "Good afternoon";
+      else greeting = "Good evening";
+      document.getElementById("greeting").textContent = greeting + ", explorer";
+    }
+
+    function updateTime() {
+      const now = new Date();
+      const hours = pad(now.getHours());
+      const minutes = pad(now.getMinutes());
+      document.getElementById("time").textContent = hours + ":" + minutes;
+      
+      const options = { weekday: 'long', month: 'short', day: 'numeric' };
+      document.getElementById("date").textContent = now.toLocaleDateString(undefined, options);
+    }
+
+    updateGreeting();
+    updateTime();
+    setInterval(updateTime, 1000 * 15);
+    setInterval(updateGreeting, 1000 * 60);
+
+    // Mock weather engine based on time & season
+    function updateWeather() {
+      const month = new Date().getMonth();
+      const hour = new Date().getHours();
+      
+      let temp = 22;
+      let desc = "sunny";
+      let icon = "☀️";
+      
+      if (month >= 10 || month <= 1) { // Winter
+        temp = 12 + Math.sin(hour / 4) * 4;
+        desc = "chilly / clear";
+        icon = "❄️";
+      } else if (month >= 5 && month <= 8) { // Summer
+        temp = 28 + Math.sin(hour / 4) * 5;
+        desc = "warm / clear";
+        icon = "☀️";
+      } else { // Spring / Autumn
+        temp = 19 + Math.sin(hour / 4) * 3;
+        desc = "mild / pleasant";
+        icon = "⛅";
+      }
+      
+      document.getElementById("weather-temp").innerText = Math.round(temp) + "°C";
+      document.getElementById("weather-desc").innerText = desc;
+      document.getElementById("weather-icon").innerText = icon;
+    }
+    updateWeather();
+    setInterval(updateWeather, 1000 * 60 * 15); // Update every 15m
+
+    // Quick notes persistence
+    const notesArea = document.getElementById("notes-textarea");
+    notesArea.value = localStorage.getItem("soul_quick_notes") || "";
+    notesArea.addEventListener("input", function() {
+      localStorage.setItem("soul_quick_notes", notesArea.value);
+    });
+
+    // Dynamic stats polling
+    let prevRx = 0;
+    let prevTx = 0;
+    let prevTime = Date.now();
+
+    function formatSpeed(bytesPerSec) {
+      if (bytesPerSec < 1024) return bytesPerSec.toFixed(1) + " B/s";
+      const kb = bytesPerSec / 1024;
+      if (kb < 1024) return kb.toFixed(1) + " KB/s";
+      const mb = kb / 1024;
+      return mb.toFixed(1) + " MB/s";
+    }
+
+    function fetchStats() {
+      fetch('soul://api/stats')
+        .then(res => res.json())
+        .then(data => {
+          // CPU Load
+          const cpu = Math.round(data.cpu || 0);
+          document.getElementById('cpu-val').innerText = cpu + "%";
+          document.getElementById('cpu-bar').style.width = cpu + "%";
+
+          // Network Speeds
+          const now = Date.now();
+          const timeDiff = (now - prevTime) / 1000.0;
+          prevTime = now;
+
+          if (prevRx > 0 && timeDiff > 0) {
+            const rxSpeed = Math.max(0, (data.netRx - prevRx) / timeDiff);
+            const txSpeed = Math.max(0, (data.netTx - prevTx) / timeDiff);
+
+            document.getElementById('net-down').innerText = formatSpeed(rxSpeed);
+            document.getElementById('net-up').innerText = formatSpeed(txSpeed);
+          }
+
+          prevRx = data.netRx;
+          prevTx = data.netTx;
+        })
+        .catch(err => console.error("Stats API error:", err));
+    }
+
+    fetchStats();
+    setInterval(fetchStats, 2000);
+
+    // Battery APIs
+    if (navigator.getBattery) {
+      navigator.getBattery().then(battery => {
+        function updateBattery() {
+          const level = Math.round(battery.level * 100);
+          document.getElementById('bat-val').innerText = level + "%" + (battery.charging ? " (Charging)" : "");
+          const bar = document.getElementById('bat-bar');
+          bar.style.width = level + "%";
+          bar.style.backgroundColor = battery.charging ? "#10b981" : (level < 20 ? "#ef4444" : "var(--accent)");
+        }
+        updateBattery();
+        battery.addEventListener('levelchange', updateBattery);
+        battery.addEventListener('chargingchange', updateBattery);
+      });
+    }
+
+    // Live History Search
+    const searchInput = document.getElementById("search-input");
+    const historyResults = document.getElementById("history-results");
+    
+    let debounceTimer;
+    searchInput.addEventListener("input", function(e) {
+      clearTimeout(debounceTimer);
+      const query = e.target.value.trim();
+      
+      if (query.length === 0) {
+        historyResults.innerHTML = "";
+        historyResults.style.display = "none";
+        return;
+      }
+      
+      debounceTimer = setTimeout(() => {
+        fetch(`soul://api/history?q=${encodeURIComponent(query)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.length === 0) {
+              historyResults.innerHTML = "";
+              historyResults.style.display = "none";
+              return;
+            }
+            
+            historyResults.style.display = "block";
+            historyResults.innerHTML = data.map(item => `
+              <a href="${item.url}" class="history-row">
+                <span class="history-title">${escapeHTML(item.title || item.url)}</span>
+                <span class="history-url">${escapeHTML(item.url.replace(/^https?:\/\//, ''))}</span>
+              </a>
+            `).join('');
+          })
+          .catch(err => console.error("History API error:", err));
+      }, 100);
+    });
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+
+    document.getElementById("search-form").addEventListener("submit", function(e) {
+      const val = searchInput.value.trim();
+      if (val.includes(".") && !val.includes(" ")) {
+        e.preventDefault();
+        window.location.href = (val.startsWith("http") ? "" : "https://") + val;
+      }
+    });
+
+    // ─── Speed Dial ───
+    const SPEED_DIAL_KEY = 'soul_speed_dial_v1';
+    const DEFAULT_TILES = [
+      { name: 'GitHub', url: 'https://github.com' },
+      { name: 'Reddit', url: 'https://reddit.com' },
+      { name: 'YouTube', url: 'https://youtube.com' },
+      { name: 'Wikipedia', url: 'https://wikipedia.org' }
+    ];
+    let speedDialTiles = [];
+    let isEditMode = false;
+
+    function loadSpeedDial() {
+      try {
+        const raw = localStorage.getItem(SPEED_DIAL_KEY);
+        speedDialTiles = raw ? JSON.parse(raw) : null;
+      } catch(e) { speedDialTiles = null; }
+      if (!speedDialTiles || speedDialTiles.length === 0) {
+        speedDialTiles = [...DEFAULT_TILES];
+        saveSpeedDial();
+      }
+      renderSpeedDial();
+    }
+
+    function saveSpeedDial() {
+      localStorage.setItem(SPEED_DIAL_KEY, JSON.stringify(speedDialTiles));
+    }
+
+    function getFaviconURL(url) {
+      try {
+        const u = new URL(url);
+        return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=64`;
+      } catch(e) { return ''; }
+    }
+
+    function renderSpeedDial() {
+      const grid = document.getElementById('speed-dial-grid');
+      if (!grid) return;
+      let html = '';
+      speedDialTiles.forEach((tile, index) => {
+        const favicon = getFaviconURL(tile.url);
+        html += `
+          <a href="${escapeHTML(tile.url)}" class="shortcut-card" draggable="${isEditMode}" data-index="${index}" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)">
+            <button class="speed-dial-remove" onclick="event.preventDefault(); removeSpeedDial(${index});" title="Remove">&times;</button>
+            <img class="speed-dial-favicon" src="${favicon}" alt="" onerror="this.style.display='none'" loading="lazy">
+            <div class="shortcut-info">
+              <span class="shortcut-name">${escapeHTML(tile.name)}</span>
+              <span class="shortcut-url">${escapeHTML(tile.url.replace(/^https?:\/\//, '').replace(/\/+$/, ''))}</span>
+            </div>
+          </a>
+        `;
+      });
+      // Add tile
+      html += `
+        <button class="speed-dial-add" onclick="addSpeedDialPrompt()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add</span>
+        </button>
+      `;
+      grid.innerHTML = html;
+    }
+
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      document.body.classList.toggle('editing', isEditMode);
+      const btn = document.getElementById('speed-dial-edit-btn');
+      if (btn) {
+        btn.textContent = isEditMode ? 'Done' : 'Edit';
+        btn.classList.toggle('active', isEditMode);
+      }
+      renderSpeedDial();
+    }
+
+    function removeSpeedDial(index) {
+      speedDialTiles.splice(index, 1);
+      saveSpeedDial();
+      renderSpeedDial();
+    }
+
+    function addSpeedDialPrompt() {
+      const url = prompt('Enter URL:');
+      if (!url) return;
+      let name = prompt('Enter name (optional):');
+      if (!name) {
+        try { name = new URL(url).hostname.replace(/^www\./, ''); }
+        catch(e) { name = url; }
+      }
+      let fixedUrl = url;
+      if (!/^https?:\/\//i.test(fixedUrl)) fixedUrl = 'https://' + fixedUrl;
+      speedDialTiles.push({ name: name.trim(), url: fixedUrl.trim() });
+      saveSpeedDial();
+      renderSpeedDial();
+    }
+
+    // HTML5 Drag and Drop Handlers
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+      if (!isEditMode) return;
+      dragSrcEl = e.currentTarget;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', e.currentTarget.getAttribute('data-index'));
+      e.currentTarget.classList.add('dragging');
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function handleDragEnter(e) {
+      if (!isEditMode) return;
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+      
+      const srcIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
+      const targetIndex = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+      
+      if (srcIndex !== targetIndex) {
+        // Swap items
+        const temp = speedDialTiles[srcIndex];
+        speedDialTiles.splice(srcIndex, 1);
+        speedDialTiles.insert(targetIndex, temp);
+        saveSpeedDial();
+        renderSpeedDial();
+      }
+      return false;
+    }
+
+    Array.prototype.insert = function (index, item) {
+      this.splice(index, 0, item);
+    };
+
+    function handleDragEnd(e) {
+      e.currentTarget.classList.remove('dragging');
+      const cards = document.querySelectorAll('.shortcut-card');
+      cards.forEach(card => card.classList.remove('drag-over'));
+    }
+
+    loadSpeedDial();
+  </script>
+</body>
+</html>
