@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Bot, Code2, Eye, ShieldCheck, Sparkles, Terminal, Activity } from 'lucide-react'
+import { Bot, Code2, Eye, ShieldCheck, Sparkles, Terminal, Activity, Send } from 'lucide-react'
 
 const tabs = [
   {
@@ -32,7 +32,42 @@ const tabs = [
   },
 ]
 
+const aiResponses: Record<string, string> = {
+  'summarize': 'The article covers three key techniques: MIR inlining, polymorphization, and LLVM pass reordering. Want me to extract code examples?',
+  'hello': 'Hi! I\'m Soul, your local AI assistant. I can summarize pages, automate browser actions, and help with code — all running on your machine.',
+  'privacy': 'Soul blocks trackers before requests fire, stores passwords in native Keychain, and keeps all AI processing local. No cloud required.',
+  'tabs': 'Soul uses a right-hand vertical tab strip with tree hierarchies, workspace audio mixing, and a ⌘K command palette for instant search.',
+  'default': 'I can help with that. Soul\'s AI runs entirely locally using Codex, with browser automation, page summaries, and clipboard analysis.',
+}
+
+function findResponse(input: string) {
+  const lower = input.toLowerCase()
+  for (const key of Object.keys(aiResponses)) {
+    if (lower.includes(key)) return aiResponses[key]
+  }
+  return aiResponses.default
+}
+
 function PreviewBox({ type }: { type: string }) {
+  const [aiInput, setAiInput] = useState('')
+  const [aiMessages, setAiMessages] = useState<{role: 'user'|'ai', text: string}[]>([
+    { role: 'user', text: 'Summarize this Rust article' },
+    { role: 'ai', text: aiResponses.summarize },
+  ])
+  const [aiTyping, setAiTyping] = useState(false)
+
+  const handleAiSend = () => {
+    if (!aiInput.trim()) return
+    const userMsg = aiInput.trim()
+    setAiMessages(prev => [...prev, { role: 'user', text: userMsg }])
+    setAiInput('')
+    setAiTyping(true)
+    setTimeout(() => {
+      setAiMessages(prev => [...prev, { role: 'ai', text: findResponse(userMsg) }])
+      setAiTyping(false)
+    }, 800)
+  }
+
   if (type === 'ai') {
     return (
       <div className="h-full flex flex-col p-5">
@@ -49,29 +84,57 @@ function PreviewBox({ type }: { type: string }) {
             <span className="text-[10px] text-slate-600">Online</span>
           </div>
         </div>
-        <div className="space-y-3 flex-1">
-          <div className="flex gap-2">
-            <div className="w-6 h-6 rounded-full bg-white/[0.05] flex-shrink-0" />
-            <div className="bg-white/[0.03] rounded-xl rounded-tl-sm px-3 py-2 text-[11px] text-slate-400 max-w-[88%] leading-relaxed">
-              Summarize this article about Rust compiler optimizations
-            </div>
-          </div>
-          <div className="flex gap-2 justify-end">
-            <div className="bg-orange-500/[0.06] rounded-xl rounded-tr-sm px-3 py-2 text-[11px] text-slate-400 max-w-[88%] leading-relaxed border border-orange-500/[0.06]">
-              The article covers three key techniques: MIR inlining, polymorphization, and LLVM pass reordering. Want me to extract code examples?
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <div className="w-6 h-6 rounded-full bg-white/[0.05] flex-shrink-0" />
-            <div className="bg-white/[0.03] rounded-xl rounded-tl-sm px-3 py-2 text-[11px] text-slate-400 max-w-[88%]">
-              Yes, save them to my notes
-            </div>
-          </div>
+
+        <div className="flex-1 overflow-y-auto space-y-3 min-h-0">
+          <AnimatePresence initial={false}>
+            {aiMessages.map((msg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`flex gap-2 ${msg.role === 'ai' ? 'justify-end' : ''}`}
+              >
+                {msg.role === 'user' && (
+                  <div className="w-5 h-5 rounded-full bg-white/[0.05] flex-shrink-0 mt-0.5" />
+                )}
+                <div className={`max-w-[88%] px-3 py-2 text-[11px] leading-relaxed rounded-xl ${
+                  msg.role === 'ai'
+                    ? 'bg-orange-500/[0.06] text-slate-400 rounded-tr-sm border border-orange-500/[0.06]'
+                    : 'bg-white/[0.03] text-slate-400 rounded-tl-sm'
+                }`}>
+                  {msg.text}
+                </div>
+              </motion.div>
+            ))}
+            {aiTyping && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-end">
+                <div className="bg-orange-500/[0.06] rounded-xl rounded-tr-sm px-3 py-2 border border-orange-500/[0.06]">
+                  <div className="flex gap-1">
+                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-1 h-1 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+
         <div className="mt-3 pt-3 border-t border-white/[0.04]">
-          <div className="bg-white/[0.02] rounded-lg px-3 py-2 text-[11px] text-slate-600 flex items-center gap-2">
-            <Sparkles size={10} className="text-slate-700" />
-            <span>Ask anything...</span>
+          <div className="flex items-center gap-2 bg-white/[0.02] rounded-lg px-3 py-2">
+            <input
+              value={aiInput}
+              onChange={e => setAiInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleAiSend()}
+              placeholder="Ask anything..."
+              className="flex-1 bg-transparent text-[11px] text-slate-300 placeholder:text-slate-700 outline-none"
+            />
+            <button
+              onClick={handleAiSend}
+              className="text-slate-600 hover:text-orange-400 transition-colors"
+            >
+              <Send size={12} />
+            </button>
           </div>
         </div>
       </div>
@@ -152,24 +215,24 @@ export default function Showcase() {
   const active = tabs.find((t) => t.id === activeTab)!
 
   return (
-    <section id="showcase" className="py-28 md:py-36">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="showcase" className="py-24 md:py-32">
+      <div className="max-w-5xl mx-auto px-6">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
             <Eye size={10} />
             <span>Showcase</span>
           </div>
-          <h2 className="text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5">
+          <h2 className="text-[2.25rem] md:text-[2.75rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4">
             Three <span className="gradient-text">pillars</span>
           </h2>
-          <p className="text-[15px] text-slate-500 max-w-xl mx-auto leading-[1.7]">
-            Intelligence, craft, and privacy — each deeply integrated into every interaction.
+          <p className="text-[14px] text-slate-500 max-w-lg mx-auto leading-[1.7]">
+            Try the AI demo. Type a message and see how Soul responds — all simulated locally.
           </p>
         </motion.div>
 
@@ -177,10 +240,10 @@ export default function Showcase() {
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid lg:grid-cols-2 gap-10 items-start"
+          className="grid lg:grid-cols-2 gap-8 items-start"
         >
           {/* Left: Tab content */}
-          <div className="space-y-5">
+          <div className="space-y-4">
             <div className="flex gap-1.5 p-1 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               {tabs.map((tab) => (
                 <button
@@ -207,12 +270,12 @@ export default function Showcase() {
                 transition={{ duration: 0.25 }}
                 className="space-y-4"
               >
-                <h3 className="text-xl font-bold text-white/90">{active.title}</h3>
-                <p className="text-[14px] text-slate-500 leading-[1.7]">{active.description}</p>
-                <ul className="space-y-2.5 pt-1">
+                <h3 className="text-lg font-bold text-white/90">{active.title}</h3>
+                <p className="text-[13px] text-slate-500 leading-[1.7]">{active.description}</p>
+                <ul className="space-y-2 pt-1">
                   {active.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2.5 text-[13px] text-slate-400">
-                      <div className="w-[5px] h-[5px] rounded-full bg-orange-400/60 flex-shrink-0" />
+                    <li key={h} className="flex items-center gap-2 text-[12px] text-slate-400">
+                      <div className="w-[4px] h-[4px] rounded-full bg-orange-400/50 flex-shrink-0" />
                       {h}
                     </li>
                   ))}
@@ -223,14 +286,14 @@ export default function Showcase() {
 
           {/* Right: Preview */}
           <div className="relative">
-            <div className="absolute -inset-6 bg-gradient-to-br from-orange-500/[0.06] via-transparent to-violet-500/[0.04] blur-3xl rounded-[2.5rem]" />
-            <div className="relative rounded-2xl border border-white/[0.06] bg-[#0c0c12] overflow-hidden shadow-2xl shadow-black/50 h-[380px]">
+            <div className="absolute -inset-5 bg-gradient-to-br from-orange-500/[0.05] via-transparent to-violet-500/[0.03] blur-3xl rounded-[2.5rem]" />
+            <div className="relative rounded-2xl border border-white/[0.06] bg-[#0c0c12] overflow-hidden shadow-2xl shadow-black/50 h-[360px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
-                  initial={{ opacity: 0, x: 16 }}
+                  initial={{ opacity: 0, x: 12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -16 }}
+                  exit={{ opacity: 0, x: -12 }}
                   transition={{ duration: 0.25 }}
                   className="h-full"
                 >

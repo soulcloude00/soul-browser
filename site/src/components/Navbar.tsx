@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Github } from 'lucide-react'
+import { Menu, X, Github, Search, Command } from 'lucide-react'
 
 const links = [
   { label: 'Features', href: '#features' },
@@ -54,11 +54,24 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
+            <button
+              onClick={() => {
+                const evt = new KeyboardEvent('keydown', { metaKey: true, key: 'k' })
+                window.dispatchEvent(evt)
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] text-slate-500 hover:text-slate-300 transition-colors duration-300 rounded-lg hover:bg-white/[0.03]"
+            >
+              <Search size={13} />
+              <span className="hidden lg:inline">Search</span>
+              <kbd className="hidden lg:flex items-center gap-0.5 px-1 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-[10px] text-slate-600 font-mono ml-1">
+                <Command size={9} />K
+              </kbd>
+            </button>
             <a
               href="https://github.com/soulcloude/mori-browser"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-[13px] text-slate-400 hover:text-white transition-colors duration-300"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-[13px] text-slate-400 hover:text-white transition-colors duration-300 rounded-lg hover:bg-white/[0.03]"
             >
               <Github size={14} />
             </a>
