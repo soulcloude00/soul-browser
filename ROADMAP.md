@@ -43,7 +43,7 @@ This document contains 106 deeply-crafted architectural improvements, feature sp
 * **User Impact:** Tactile confirmation of screen layout updates, providing a physical, satisfying feel to spatial management.
 
 ### 10. Native Keychain Storage Migration (Stable Mode Support)
-* **Implementation Path:** Implement a native Swift bridge to Apple Keychain Services, replacing mocked password stores when launching with `MORI_USE_REAL_KEYCHAIN=1`.
+* **Implementation Path:** Implement a native Swift bridge to Apple Keychain Services, replacing mocked password stores when launching with `SOUL_USE_REAL_KEYCHAIN=1`.
 * **User Impact:** Auto-saves passwords securely inside the Apple Keychain, synchronized via iCloud with Safari and other devices.
 
 ### 11. Low Power Mode Integration

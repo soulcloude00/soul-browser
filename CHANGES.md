@@ -155,6 +155,19 @@ Created a centralized logging utility using Apple's `os.log` framework with:
 | 7 | Session Restore Dialog | ✅ Modal overlay built and wired |
 | 8 | Context Menu | ✅ Inspect, Open Link, Copy Link added |
 
+## 7. Environment Variable Rebrand ✅
+**Files:** `README.md`, `ROADMAP.md`
+
+**Changes:**
+- Replaced all user-facing `MORI_` environment variable references with `SOUL_`:
+  - `MORI_USE_REAL_KEYCHAIN` → `SOUL_USE_REAL_KEYCHAIN`
+  - `MORI_ENABLE_CODEX_ASSISTANT` → `SOUL_ENABLE_CODEX_ASSISTANT`
+  - `MORI_CODEX_DYNAMIC_TOOLS` → `SOUL_CODEX_DYNAMIC_TOOLS`
+  - `MORI_EXTENSION_SMOKE_WAIT_ATTEMPTS` → `SOUL_EXTENSION_SMOKE_WAIT_ATTEMPTS`
+- Fixed keyboard shortcuts table: `⌘S / ⌃S` corrected to `⌘S` for sidebar toggle; `⌘K` now correctly labeled as "Command palette".
+
+**Impact:** Consistent Soul branding across all documentation and environment configuration.
+
 ---
 
 *Document compiled: June 2025*

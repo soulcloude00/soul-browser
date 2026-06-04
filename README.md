@@ -64,7 +64,7 @@ The first run builds `libcef_dll_wrapper` from the bundled CEF distribution.
   Developer Team baked into the project. Because each ad-hoc rebuild changes
   the signature, Chromium's Keychain "Safe Storage" would re-prompt every
   launch — we pass `--use-mock-keychain` / `--password-store=basic` by default.
-  Set `MORI_USE_REAL_KEYCHAIN=1` only for a stable Developer ID build.
+  Set `SOUL_USE_REAL_KEYCHAIN=1` only for a stable Developer ID build.
 - Hardened runtime is **off** for dev; the entitlements still grant JIT /
   unsigned-executable-memory / library-validation-disabled for Chromium's V8.
 
@@ -73,8 +73,8 @@ The first run builds `libcef_dll_wrapper` from the bundled CEF distribution.
 The Codex-powered assistant is **enabled by default**. It launches a local
 Codex app server with broad filesystem access for browser automation, so run
 Soul only on machines where you trust that local Codex setup. To opt out,
-launch with `MORI_ENABLE_CODEX_ASSISTANT=0`. Dynamic browser tools can
-additionally be enabled with `MORI_CODEX_DYNAMIC_TOOLS=1`.
+launch with `SOUL_ENABLE_CODEX_ASSISTANT=0`. Dynamic browser tools can
+additionally be enabled with `SOUL_CODEX_DYNAMIC_TOOLS=1`.
 
 ## Extension readiness
 
@@ -95,7 +95,7 @@ That smoke boots the bundled CEF runtime, proves no external Google Chrome
 process or `--load-extension` surface is used, installs multiple fixture
 extensions, and exercises the extension APIs above end to end. The smoke wait
 budget defaults to three minutes and can be adjusted for slow machines with
-`MORI_EXTENSION_SMOKE_WAIT_ATTEMPTS` (four attempts per second).
+`SOUL_EXTENSION_SMOKE_WAIT_ATTEMPTS` (four attempts per second).
 
 ## Keyboard shortcuts
 
@@ -104,7 +104,7 @@ budget defaults to three minutes and can be adjusted for slow machines with
 | ⌘T / ⌘W | New / close tab | ⌘L | Focus omnibox |
 | ⇧⌘T | Reopen closed tab | ⌘[ / ⌘] | Back / forward |
 | ⌘R / ⇧⌘R | Reload / force reload | ⌘+ / ⌘- / ⌘0 | Zoom in / out / reset |
-| ⌘S / ⌃S | Toggle tab sidebar | ⌘K | Toggle AI panel |
+| ⌘S | Toggle tab sidebar | ⌘K | Command palette |
 | ⌘, | Settings | ⇧⌘H | Home |
 
 ## Layout
