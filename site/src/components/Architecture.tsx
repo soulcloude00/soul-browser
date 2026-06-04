@@ -7,77 +7,91 @@ const layers = [
     title: 'SwiftUI Chrome',
     subtitle: 'RootView · Toolbar · Sidebar · AIPanel · Settings',
     icon: Layers,
-    color: 'bg-violet-500/10 border-violet-500/20 text-violet-300',
+    accent: 'from-violet-500/10 to-violet-600/5',
+    border: 'border-violet-500/10',
+    text: 'text-violet-300/80',
+    dot: 'bg-violet-400',
   },
   {
     title: 'ObjC Bridge',
     subtitle: 'SoulBrowserView header — pure ObjC, Swift-facing',
     icon: ArrowRightLeft,
-    color: 'bg-accent-500/10 border-accent-500/20 text-accent-300',
+    accent: 'from-orange-500/10 to-orange-600/5',
+    border: 'border-orange-500/10',
+    text: 'text-orange-300/80',
+    dot: 'bg-orange-400',
   },
   {
     title: 'CEF Engine',
     subtitle: 'Chromium 148 · CEF 148 · MetalRenderHandler',
     icon: Monitor,
-    color: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
+    accent: 'from-emerald-500/10 to-emerald-600/5',
+    border: 'border-emerald-500/10',
+    text: 'text-emerald-300/80',
+    dot: 'bg-emerald-400',
   },
   {
     title: 'Native macOS',
     subtitle: 'AppKit · NSRunLoop · NSVisualEffectView · Liquid Glass',
     icon: Sparkles,
-    color: 'bg-sky-500/10 border-sky-500/20 text-sky-300',
+    accent: 'from-sky-500/10 to-sky-600/5',
+    border: 'border-sky-500/10',
+    text: 'text-sky-300/80',
+    dot: 'bg-sky-400',
   },
 ]
 
 export default function Architecture() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="architecture" className="py-24 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_50%,rgba(254,128,16,0.05),transparent)]" />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <section id="architecture" className="py-28 md:py-36 relative overflow-hidden">
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs text-accent-300 mb-6">
-            <Layers size={12} />
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
+            <Layers size={10} />
             <span>Architecture</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          <h2 className="text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5">
             Native meets <span className="gradient-text">Chromium</span>
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Soul bridges the best of both worlds: the fluidity of SwiftUI and AppKit
-            with the compatibility of a real Chromium engine.
+          <p className="text-[15px] text-slate-500 max-w-xl mx-auto leading-[1.7]">
+            Soul bridges the best of both worlds: the fluidity of SwiftUI with the compatibility of a real Chromium engine.
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-xl mx-auto space-y-3">
           {layers.map((layer, i) => (
             <motion.div
               key={layer.title}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -40 : 40 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.12 }}
               className="relative"
             >
-              <div className={`flex items-center gap-4 p-5 rounded-xl border ${layer.color} mb-4 backdrop-blur-sm`}>
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-white/5`}>
-                  <layer.icon size={20} strokeWidth={1.5} />
+              <div className={`flex items-center gap-4 p-4 rounded-2xl border ${layer.border} bg-gradient-to-r ${layer.accent} backdrop-blur-sm`}>
+                <div className="relative">
+                  <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
+                    <layer.icon size={16} strokeWidth={1.5} className={layer.text} />
+                  </div>
+                  <div className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full ${layer.dot} glow-dot`} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">{layer.title}</h3>
-                  <p className="text-xs opacity-70 mt-0.5">{layer.subtitle}</p>
+                  <h3 className="text-[14px] font-semibold text-white/90">{layer.title}</h3>
+                  <p className="text-[12px] text-slate-500 mt-0.5">{layer.subtitle}</p>
                 </div>
               </div>
               {i < layers.length - 1 && (
-                <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 w-px h-4 bg-white/10" />
+                <div className="flex justify-center py-1">
+                  <div className="w-px h-4 bg-gradient-to-b from-white/10 to-transparent" />
+                </div>
               )}
             </motion.div>
           ))}
@@ -86,17 +100,17 @@ export default function Architecture() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 grid md:grid-cols-3 gap-6"
+          transition={{ duration: 0.6, delay: 0.7 }}
+          className="mt-14 grid md:grid-cols-3 gap-3"
         >
           {[
-            { label: 'SwiftUI + AppKit', desc: 'Native macOS chrome with Liquid Glass' },
-            { label: 'CEF 148 / Chromium 148', desc: 'Latest embedded Chromium, arm64 native' },
-            { label: '6 Process Bundles', desc: 'Main + GPU + Plugin + Renderer + Alerts + Helper' },
+            { label: 'SwiftUI + AppKit', desc: 'Native macOS chrome' },
+            { label: 'CEF 148', desc: 'Chromium 148, arm64' },
+            { label: '6 Processes', desc: 'Main + GPU + Renderer + Helpers' },
           ].map((item) => (
-            <div key={item.label} className="text-center p-6 rounded-xl glass border border-white/5">
-              <h4 className="font-semibold text-slate-200 mb-1">{item.label}</h4>
-              <p className="text-sm text-slate-500">{item.desc}</p>
+            <div key={item.label} className="text-center p-5 rounded-2xl glass-card">
+              <h4 className="text-[13px] font-semibold text-white/80 mb-1">{item.label}</h4>
+              <p className="text-[12px] text-slate-500">{item.desc}</p>
             </div>
           ))}
         </motion.div>
