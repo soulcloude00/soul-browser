@@ -71,7 +71,7 @@ const parts = [
   },
 ]
 
-function PartCard({ part, index }: { part: typeof parts[0]; index: number; key?: string }) {
+function PartCard({ part, index }: { part: typeof parts[0]; index: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-50px' })
 
@@ -81,18 +81,18 @@ function PartCard({ part, index }: { part: typeof parts[0]; index: number; key?:
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="panel p-6 rounded-2xl"
+      className="panel p-6 rounded-2xl border border-zinc-900/10 dark:border-white/10"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-zinc-900">{part.title}</h3>
-        <span className="text-[11px] font-mono tabular-nums text-orange-700 bg-orange-600/10 px-2 py-0.5 rounded-md border border-orange-600/20">
+        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 transition-colors">{part.title}</h3>
+        <span className="text-[11px] font-mono tabular-nums text-orange-700 dark:text-orange-400 bg-orange-600/10 px-2 py-0.5 rounded-md border border-orange-600/20 transition-colors">
           {part.done}/{part.items.length}
         </span>
       </div>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
         {part.items.map((item) => (
-          <li key={item} className="flex items-center gap-2 text-xs text-zinc-600">
-            <CheckCircle2 size={11} className="text-orange-600/70 flex-shrink-0" />
+          <li key={item} className="flex items-center gap-2 text-xs text-zinc-650 dark:text-zinc-400 transition-colors">
+            <CheckCircle2 size={11} className="text-orange-600/70 dark:text-orange-500/70 flex-shrink-0" />
             <span className="truncate">{item}</span>
           </li>
         ))}
@@ -108,7 +108,7 @@ export default function Roadmap() {
   const totalDone = parts.reduce((acc, p) => acc + p.done, 0)
 
   return (
-    <section id="roadmap" className="py-28 md:py-36 relative">
+    <section id="roadmap" className="py-28 md:py-36 relative border-t border-zinc-900/10 dark:border-white/10 bg-transparent">
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <motion.div
           ref={headerRef}
@@ -117,27 +117,27 @@ export default function Roadmap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] mb-5 text-balance">
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] dark:text-zinc-100 mb-5 text-balance transition-colors">
             <span className="text-orange-600 tabular-nums">106</span> features planned
           </h2>
-          <p className="text-base text-zinc-600 max-w-xl mx-auto leading-[1.6] mb-10">
-            A roadmap spanning architecture, AI, performance, privacy, and developer tooling.
+          <p className="text-base text-zinc-650 dark:text-zinc-400 max-w-xl mx-auto leading-[1.6] mb-10 transition-colors">
+            A detailed, structured roadmap spanning core macOS architecture, local AI integrations, privacy shields, and developer utilities.
           </p>
 
           <div className="inline-flex items-center gap-5 px-7 py-4 rounded-2xl panel">
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600 tabular-nums">{totalDone}</div>
-              <div className="text-[11px] text-zinc-500 mt-0.5">Shipped</div>
+              <div className="text-2xl font-bold text-orange-600 dark:text-orange-500 tabular-nums">{totalDone}</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 font-mono uppercase tracking-wider">Shipped</div>
             </div>
-            <div className="w-px h-8 bg-zinc-900/10" />
+            <div className="w-px h-8 bg-zinc-900/10 dark:bg-white/10" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-zinc-900 tabular-nums">106</div>
-              <div className="text-[11px] text-zinc-500 mt-0.5">Planned</div>
+              <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 tabular-nums">106</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 font-mono uppercase tracking-wider">Planned</div>
             </div>
-            <div className="w-px h-8 bg-zinc-900/10" />
+            <div className="w-px h-8 bg-zinc-900/10 dark:bg-white/10" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600 tabular-nums">{Math.round((totalDone / 106) * 100)}%</div>
-              <div className="text-[11px] text-zinc-500 mt-0.5">Complete</div>
+              <div className="text-2xl font-bold text-orange-600 dark:text-orange-500 tabular-nums">{Math.round((totalDone / 106) * 100)}%</div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 font-mono uppercase tracking-wider">Complete</div>
             </div>
           </div>
         </motion.div>
@@ -159,7 +159,7 @@ export default function Roadmap() {
             href="https://github.com/soulcloude/mori-browser/blob/main/ROADMAP.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-zinc-700 hover:text-[#14130f] rounded-xl transition-colors border border-zinc-900/15 hover:border-zinc-900/30 bg-white/40 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-900/15"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-xl transition-all duration-300 border border-zinc-900/15 dark:border-white/15 hover:border-zinc-900/30 dark:hover:border-white/30 bg-white/40 dark:bg-white/5 active:scale-[0.98] focus:outline-none"
           >
             <Rocket size={13} />
             <span>View full roadmap on GitHub</span>
