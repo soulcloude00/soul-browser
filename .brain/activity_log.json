@@ -138,5 +138,12 @@
     "category": "file_watcher",
     "summary": "+1 new",
     "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-05T16:25:04.552068",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~1 modified",
+    "actor": "system"
   }
 ]
