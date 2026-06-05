@@ -18,7 +18,7 @@ const features = [
     icon: Brain,
     title: 'Local AI',
     short: 'Codex-powered assistant running entirely on your machine.',
-    full: 'A built-in Codex assistant with browser automation, page summaries, clipboard analysis, and reader mode — all local, zero cloud. Supports Ollama and LM Studio.',
+    full: 'A built-in Codex assistant with browser automation, page summaries, clipboard analysis, and reader mode - all local, zero cloud. Supports Ollama and LM Studio.',
   },
   {
     icon: Zap,
@@ -79,7 +79,7 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
     >
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left relative p-5 rounded-2xl glass-card overflow-hidden"
+        className="w-full text-left relative p-5 rounded-2xl glass-card overflow-hidden active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -132,10 +132,10 @@ export default function Features() {
             <Sparkles size={10} />
             <span>Features</span>
           </div>
-          <h2 className="text-[2.25rem] md:text-[2.75rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4 text-balance">
             Built for the way <span className="gradient-text">you</span> work
           </h2>
-          <p className="text-[14px] text-slate-500 max-w-lg mx-auto leading-[1.7]">
+          <p className="text-sm text-slate-500 max-w-lg mx-auto leading-[1.7]">
             Click any card to explore. Every feature crafted for macOS power users.
           </p>
         </motion.div>

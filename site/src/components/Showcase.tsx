@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Bot, Code2, Eye, ShieldCheck, Sparkles, Terminal, Activity, Send } from 'lucide-react'
+import { Bot, Code2, ShieldCheck, Sparkles, Terminal, Activity, Send } from 'lucide-react'
 
 const tabs = [
   {
@@ -8,7 +8,7 @@ const tabs = [
     label: 'AI',
     icon: Bot,
     title: 'Your browser thinks with you',
-    description: 'A local Codex assistant that reads pages, automates actions, analyzes your clipboard, and summarizes articles — all without a single byte leaving your machine.',
+    description: 'A local Codex assistant that reads pages, automates actions, analyzes your clipboard, and summarizes articles - all without a single byte leaving your machine.',
     highlights: ['Local LLM configurator (Ollama / LM Studio)', 'In-page smart rewrite tool', 'AI-assisted form filler', 'Reader mode summary engine', 'Voice control & transcription'],
     preview: 'ai',
   },
@@ -17,7 +17,7 @@ const tabs = [
     label: 'Dev',
     icon: Code2,
     title: 'Built for makers',
-    description: 'A browser that understands developers. Terminal sidebar, HTTP inspector, responsive canvas, JSON formatter, color picker, and a live console — all natively integrated.',
+    description: 'A browser that understands developers. Terminal sidebar, HTTP inspector, responsive canvas, JSON formatter, color picker, and a live console - all natively integrated.',
     highlights: ['Integrated terminal sidebar', 'HTTP request/response inspector', 'Responsive layout canvas', 'Local SSL certificate manager', 'Web asset downloader'],
     preview: 'dev',
   },
@@ -34,7 +34,7 @@ const tabs = [
 
 const aiResponses: Record<string, string> = {
   'summarize': 'The article covers three key techniques: MIR inlining, polymorphization, and LLVM pass reordering. Want me to extract code examples?',
-  'hello': 'Hi! I\'m Soul, your local AI assistant. I can summarize pages, automate browser actions, and help with code — all running on your machine.',
+  'hello': 'Hi! I\'m Soul, your local AI assistant. I can summarize pages, automate browser actions, and help with code - all running on your machine.',
   'privacy': 'Soul blocks trackers before requests fire, stores passwords in native Keychain, and keeps all AI processing local. No cloud required.',
   'tabs': 'Soul uses a right-hand vertical tab strip with tree hierarchies, workspace audio mixing, and a ⌘K command palette for instant search.',
   'default': 'I can help with that. Soul\'s AI runs entirely locally using Codex, with browser automation, page summaries, and clipboard analysis.',
@@ -224,15 +224,11 @@ export default function Showcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
-            <Eye size={10} />
-            <span>Showcase</span>
-          </div>
-          <h2 className="text-[2.25rem] md:text-[2.75rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4 text-balance">
             Three <span className="gradient-text">pillars</span>
           </h2>
           <p className="text-[14px] text-slate-500 max-w-lg mx-auto leading-[1.7]">
-            Try the AI demo. Type a message and see how Soul responds — all simulated locally.
+            Try the AI demo. Type a message and see how Soul responds - all simulated locally.
           </p>
         </motion.div>
 
@@ -249,7 +245,7 @@ export default function Showcase() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-300 ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 ${
                     activeTab === tab.id
                       ? 'bg-white/[0.06] text-white'
                       : 'text-slate-600 hover:text-slate-300'

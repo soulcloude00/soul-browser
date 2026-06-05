@@ -12,29 +12,16 @@ export default function Hero() {
   const [activeTab, setActiveTab] = useState('soul')
 
   return (
-    <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden">
+    <section className="relative pt-24 pb-20 md:pt-28 md:pb-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left: Text */}
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[12px] text-orange-300/70"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-30" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-400" />
-              </span>
-              <span>Active development</span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-[2.5rem] md:text-[3.25rem] font-bold tracking-[-0.03em] leading-[1.05] text-white"
+              className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold tracking-[-0.03em] leading-[1.05] text-white text-balance"
             >
               The browser your{' '}
               <span className="gradient-text">Mac</span> deserves
@@ -60,7 +47,7 @@ export default function Hero() {
                 href="https://github.com/soulcloude/mori-browser"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-[14px] font-medium rounded-xl transition-all duration-300 hover:bg-white/90"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-xl transition-all duration-300 hover:bg-white/90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-[#0a0a0f]"
               >
                 <span>Get Started</span>
                 <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
@@ -70,7 +57,7 @@ export default function Hero() {
                   const evt = new KeyboardEvent('keydown', { metaKey: true, key: 'k' })
                   window.dispatchEvent(evt)
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-[14px] text-slate-300 hover:text-white font-medium rounded-xl transition-colors border border-white/[0.06] hover:border-white/10 bg-white/[0.02]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-slate-300 hover:text-white font-medium rounded-xl transition-colors border border-white/[0.06] hover:border-white/10 bg-white/[0.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-[#0a0a0f]"
               >
                 <Command size={13} />
                 <span>Try ⌘K</span>
@@ -124,7 +111,7 @@ export default function Hero() {
               </div>
 
               <div className="flex h-[320px]">
-                {/* Vertical tab strip — interactive */}
+                {/* Vertical tab strip - interactive */}
                 <div className="w-[52px] border-r border-white/[0.04] flex flex-col items-center py-2.5 gap-1 bg-[#0a0a0f]">
                   {browserTabs.map((tab) => (
                     <button
@@ -148,7 +135,7 @@ export default function Hero() {
                   </div>
                 </div>
 
-                {/* Content area — changes with tab */}
+                {/* Content area - changes with tab */}
                 <div className="flex-1 flex flex-col relative overflow-hidden">
                   <div className="h-9 border-b border-white/[0.03] flex items-center px-3 gap-2">
                     <div className="flex gap-1">

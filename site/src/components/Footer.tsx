@@ -16,7 +16,7 @@ export default function Footer() {
               </div>
               <span className="font-semibold text-[15px] text-white/90">Soul</span>
             </div>
-            <p className="text-[13px] text-slate-500 max-w-sm leading-[1.7]">
+            <p className="text-sm text-slate-500 max-w-sm leading-[1.7]">
               A native macOS AI browser built with SwiftUI, AppKit, and Chromium.
               For power users who value privacy, performance, and craft.
             </p>
@@ -25,7 +25,7 @@ export default function Footer() {
                 href="https://github.com/soulcloude/mori-browser"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300"
+                className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
               >
                 <Github size={14} />
               </a>
@@ -33,7 +33,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-white/70 mb-3 tracking-wide uppercase">Project</h4>
+            <h4 className="text-xs font-semibold text-white/70 mb-3 tracking-wide uppercase">Project</h4>
             <ul className="space-y-2">
               {[
                 { label: 'README', href: 'https://github.com/soulcloude/mori-browser/blob/main/README.md' },
@@ -46,7 +46,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[13px] text-slate-500 hover:text-white transition-colors inline-flex items-center gap-1"
+                    className="text-sm text-slate-500 hover:text-white transition-colors inline-flex items-center gap-1 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 rounded-md px-1 -ml-1"
                   >
                     {link.label}
                     <ExternalLink size={9} className="opacity-30" />
@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-white/70 mb-3 tracking-wide uppercase">Resources</h4>
+            <h4 className="text-xs font-semibold text-white/70 mb-3 tracking-wide uppercase">Resources</h4>
             <ul className="space-y-2">
               {[
                 { label: 'Architecture', href: '#architecture' },
@@ -70,7 +70,7 @@ export default function Footer() {
                     href={link.href}
                     target={link.href.startsWith('http') ? '_blank' : undefined}
                     rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="text-[13px] text-slate-500 hover:text-white transition-colors inline-flex items-center gap-1"
+                    className="text-sm text-slate-500 hover:text-white transition-colors inline-flex items-center gap-1 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 rounded-md px-1 -ml-1"
                   >
                     {link.label}
                     {link.href.startsWith('http') && <ExternalLink size={9} className="opacity-30" />}
@@ -81,7 +81,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-white/[0.03] flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-slate-600">
+        <div className="pt-6 border-t border-white/[0.03] flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-600">
           <div className="flex items-center gap-1">
             <span>Made with</span>
             <Heart size={10} className="text-rose-500/70 fill-rose-500/70" />

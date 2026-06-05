@@ -5,7 +5,7 @@ import { Layers, ArrowRightLeft, Monitor, Sparkles } from 'lucide-react'
 const layers = [
   {
     title: 'SwiftUI Chrome',
-    subtitle: 'RootView · Toolbar · Sidebar · AIPanel · Settings',
+    subtitle: 'RootView, Toolbar, Sidebar, AIPanel, Settings',
     icon: Layers,
     accent: 'from-violet-500/10 to-violet-600/5',
     border: 'border-violet-500/10',
@@ -14,7 +14,7 @@ const layers = [
   },
   {
     title: 'ObjC Bridge',
-    subtitle: 'SoulBrowserView header — pure ObjC, Swift-facing',
+    subtitle: 'SoulBrowserView header: pure ObjC, Swift-facing',
     icon: ArrowRightLeft,
     accent: 'from-orange-500/10 to-orange-600/5',
     border: 'border-orange-500/10',
@@ -23,7 +23,7 @@ const layers = [
   },
   {
     title: 'CEF Engine',
-    subtitle: 'Chromium 148 · CEF 148 · MetalRenderHandler',
+    subtitle: 'Chromium 148, CEF 148, MetalRenderHandler',
     icon: Monitor,
     accent: 'from-emerald-500/10 to-emerald-600/5',
     border: 'border-emerald-500/10',
@@ -32,7 +32,7 @@ const layers = [
   },
   {
     title: 'Native macOS',
-    subtitle: 'AppKit · NSRunLoop · NSVisualEffectView · Liquid Glass',
+    subtitle: 'AppKit, NSRunLoop, NSVisualEffectView, Liquid Glass',
     icon: Sparkles,
     accent: 'from-sky-500/10 to-sky-600/5',
     border: 'border-sky-500/10',
@@ -53,21 +53,17 @@ export default function Architecture() {
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
-            <Layers size={10} />
-            <span>Architecture</span>
-          </div>
-          <h2 className="text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5 text-balance">
             Native meets <span className="gradient-text">Chromium</span>
           </h2>
-          <p className="text-[15px] text-slate-500 max-w-xl mx-auto leading-[1.7]">
+          <p className="text-base text-slate-500 max-w-xl leading-[1.7]">
             Soul bridges the best of both worlds: the fluidity of SwiftUI with the compatibility of a real Chromium engine.
           </p>
         </motion.div>
 
-        <div className="max-w-xl mx-auto space-y-3">
+        <div className="max-w-xl space-y-3">
           {layers.map((layer, i) => (
             <motion.div
               key={layer.title}

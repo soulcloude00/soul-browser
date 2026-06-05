@@ -46,7 +46,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-4 py-1.5 text-[13px] text-slate-400 hover:text-white transition-colors duration-300"
+                className="px-4 py-1.5 text-sm text-slate-400 hover:text-white transition-colors duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 rounded-lg"
               >
                 {link.label}
               </a>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 const evt = new KeyboardEvent('keydown', { metaKey: true, key: 'k' })
                 window.dispatchEvent(evt)
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] text-slate-500 hover:text-slate-300 transition-colors duration-300 rounded-lg hover:bg-white/[0.03]"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors duration-300 rounded-lg hover:bg-white/[0.03] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
             >
               <Search size={13} />
               <span className="hidden lg:inline">Search</span>
@@ -71,13 +71,13 @@ export default function Navbar() {
               href="https://github.com/soulcloude/mori-browser"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-[13px] text-slate-400 hover:text-white transition-colors duration-300 rounded-lg hover:bg-white/[0.03]"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-sm text-slate-400 hover:text-white transition-colors duration-300 rounded-lg hover:bg-white/[0.03] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
             >
               <Github size={14} />
             </a>
             <a
               href="#"
-              className="px-4 py-1.5 text-[13px] font-medium bg-white/90 hover:bg-white text-black rounded-lg transition-all duration-300"
+              className="px-4 py-1.5 text-sm font-medium bg-white/90 hover:bg-white text-black rounded-lg transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-[#0a0a0f]"
             >
               Download
             </a>
@@ -85,7 +85,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-1.5 text-slate-400 hover:text-white"
+            className="md:hidden p-1.5 text-slate-400 hover:text-white active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 rounded-lg"
           >
             {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
@@ -107,7 +107,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="px-4 py-2.5 text-[13px] text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+                  className="px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
                 >
                   {link.label}
                 </a>
@@ -117,14 +117,14 @@ export default function Navbar() {
                   href="https://github.com/soulcloude/mori-browser"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 text-[13px] text-slate-400 hover:text-white"
+                  className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-400 hover:text-white active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 rounded-xl"
                 >
                   <Github size={14} />
                   <span>GitHub</span>
                 </a>
                 <a
                   href="#"
-                  className="mx-1 px-4 py-2.5 text-center text-[13px] font-medium bg-white/90 text-black rounded-xl"
+                  className="mx-1 px-4 py-2.5 text-center text-sm font-medium bg-white/90 text-black rounded-xl active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/20"
                 >
                   Download
                 </a>

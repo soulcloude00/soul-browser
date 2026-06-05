@@ -130,10 +130,10 @@ export default function Roadmap() {
             <Map size={10} />
             <span>Roadmap</span>
           </div>
-          <h2 className="text-[2.5rem] md:text-[3rem] font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5 text-balance">
             <span className="gradient-text">106 features</span> planned
           </h2>
-          <p className="text-[15px] text-slate-500 max-w-xl mx-auto leading-[1.7] mb-10">
+          <p className="text-base text-slate-500 max-w-xl mx-auto leading-[1.7] mb-10">
             A deeply-crafted roadmap spanning architecture, AI, performance, privacy, and developer tooling.
           </p>
 
@@ -172,7 +172,7 @@ export default function Roadmap() {
             href="https://github.com/soulcloude/mori-browser/blob/main/ROADMAP.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-[13px] text-slate-400 hover:text-white rounded-xl transition-colors border border-white/[0.05] hover:border-white/10 bg-white/[0.02]"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-slate-400 hover:text-white rounded-xl transition-colors border border-white/[0.05] hover:border-white/10 bg-white/[0.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
           >
             <Rocket size={13} />
             <span>View full roadmap on GitHub</span>
