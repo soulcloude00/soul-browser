@@ -9,7 +9,6 @@ import {
   Gauge,
   Eye,
   Lock,
-  Sparkles,
   ChevronRight,
 } from 'lucide-react'
 
@@ -79,19 +78,17 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
     >
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left relative p-5 rounded-2xl glass-card overflow-hidden active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
+        className="w-full h-full text-left relative p-5 rounded-2xl panel overflow-hidden hover:-translate-y-0.5 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-white/10"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
         <div className="relative">
-          <div className="flex items-start justify-between mb-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/[0.06] flex items-center justify-center group-hover:border-orange-500/20 transition-colors duration-500">
-              <feature.icon size={16} strokeWidth={1.5} className="text-orange-400/60 group-hover:text-orange-400 transition-colors duration-500" />
+          <div className="flex items-start justify-between mb-4">
+            <div className="w-10 h-10 rounded-xl bg-orange-500/[0.07] border border-orange-500/15 flex items-center justify-center transition-colors duration-300 group-hover:bg-orange-500/[0.12]">
+              <feature.icon size={18} strokeWidth={1.75} className="text-orange-400" />
             </div>
-            <ChevronRight size={14} className={`text-slate-700 transition-transform duration-300 ${expanded ? 'rotate-90' : 'group-hover:translate-x-0.5'}`} />
+            <span className="font-mono text-[10px] text-slate-700 tabular-nums">{String(index + 1).padStart(2, '0')}</span>
           </div>
-          <h3 className="text-[14px] font-semibold text-white/80 mb-1">{feature.title}</h3>
-          <p className="text-[12px] text-slate-500 leading-[1.6]">{feature.short}</p>
+          <h3 className="font-display text-[15px] font-medium text-white/90 mb-1.5">{feature.title}</h3>
+          <p className="text-[12.5px] text-slate-500 leading-[1.55]">{feature.short}</p>
 
           <AnimatePresence>
             {expanded && (
@@ -102,12 +99,17 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="pt-3 mt-3 border-t border-white/[0.04]">
-                  <p className="text-[12px] text-slate-400 leading-[1.7]">{feature.full}</p>
+                <div className="pt-3 mt-3 border-t border-white/[0.06]">
+                  <p className="text-[12.5px] text-slate-400 leading-[1.65]">{feature.full}</p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
+
+          <div className="mt-3 flex items-center gap-1 text-[11px] text-slate-600 group-hover:text-orange-400/80 transition-colors">
+            <span>{expanded ? 'Less' : 'Details'}</span>
+            <ChevronRight size={12} className={`transition-transform duration-300 ${expanded ? 'rotate-90' : 'group-hover:translate-x-0.5'}`} />
+          </div>
         </div>
       </button>
     </motion.div>
@@ -126,21 +128,17 @@ export default function Features() {
           initial={{ opacity: 0, y: 24 }}
           animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="max-w-2xl mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
-            <Sparkles size={10} />
-            <span>Features</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4 text-balance">
-            Built for the way <span className="gradient-text">you</span> work
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
+            Built for the way <span className="text-orange-400">you</span> work
           </h2>
-          <p className="text-sm text-slate-500 max-w-lg mx-auto leading-[1.7]">
-            Click any card to explore. Every feature crafted for macOS power users.
+          <p className="text-base text-slate-400 max-w-md leading-[1.6]">
+            Eight native systems, each crafted for macOS power users. Tap a card to expand.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
           {features.map((feature, i) => (
             <FeatureCard key={feature.title} feature={feature} index={i} />
           ))}

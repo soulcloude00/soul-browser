@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Rocket, Map, CheckCircle2 } from 'lucide-react'
+import { Rocket, CheckCircle2 } from 'lucide-react'
 
 const parts = [
   {
@@ -81,27 +81,19 @@ function PartCard({ part, index }: { part: typeof parts[0]; index: number; key?:
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="glass-card p-6 rounded-2xl"
+      className="panel p-6 rounded-2xl"
     >
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-[14px] font-semibold text-white/80">{part.title}</h3>
-        <span className="text-[11px] text-orange-400/80 bg-orange-500/[0.08] px-2 py-0.5 rounded-full border border-orange-500/[0.1]">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-white/85">{part.title}</h3>
+        <span className="text-[11px] font-mono tabular-nums text-orange-400/90 bg-orange-500/[0.08] px-2 py-0.5 rounded-md border border-orange-500/15">
           {part.done}/{part.items.length}
         </span>
       </div>
-      <div className="w-full h-[3px] bg-white/[0.03] rounded-full mb-4 overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${(part.done / part.items.length) * 100}%` } : {}}
-          transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="h-full bg-gradient-to-r from-orange-500 to-amber-400 rounded-full"
-        />
-      </div>
-      <ul className="space-y-1.5">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
         {part.items.map((item) => (
-          <li key={item} className="flex items-center gap-2 text-[12px] text-slate-500">
-            <CheckCircle2 size={11} className="text-emerald-500/60 flex-shrink-0" />
-            <span>{item}</span>
+          <li key={item} className="flex items-center gap-2 text-xs text-slate-500">
+            <CheckCircle2 size={11} className="text-orange-400/50 flex-shrink-0" />
+            <span className="truncate">{item}</span>
           </li>
         ))}
       </ul>
@@ -114,7 +106,6 @@ export default function Roadmap() {
   const isHeaderInView = useInView(headerRef, { once: true, margin: '-80px' })
 
   const totalDone = parts.reduce((acc, p) => acc + p.done, 0)
-  const totalItems = parts.reduce((acc, p) => acc + p.items.length, 0)
 
   return (
     <section id="roadmap" className="py-28 md:py-36 relative">
@@ -126,30 +117,26 @@ export default function Roadmap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-[11px] text-orange-300/70 mb-6 tracking-wide uppercase font-medium">
-            <Map size={10} />
-            <span>Roadmap</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5 text-balance">
-            <span className="gradient-text">106 features</span> planned
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
+            <span className="text-orange-400 tabular-nums">106</span> features planned
           </h2>
-          <p className="text-base text-slate-500 max-w-xl mx-auto leading-[1.7] mb-10">
-            A deeply-crafted roadmap spanning architecture, AI, performance, privacy, and developer tooling.
+          <p className="text-base text-slate-400 max-w-xl mx-auto leading-[1.6] mb-10">
+            A roadmap spanning architecture, AI, performance, privacy, and developer tooling.
           </p>
 
           <div className="inline-flex items-center gap-5 px-7 py-4 rounded-2xl glass-strong border border-white/[0.06]">
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-400/90">{totalDone}</div>
+              <div className="text-2xl font-bold text-orange-400/90 tabular-nums">{totalDone}</div>
               <div className="text-[11px] text-slate-600 mt-0.5">Shipped</div>
             </div>
             <div className="w-px h-8 bg-white/[0.06]" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-white/80">{totalItems}</div>
+              <div className="text-2xl font-bold text-white/80 tabular-nums">106</div>
               <div className="text-[11px] text-slate-600 mt-0.5">Planned</div>
             </div>
             <div className="w-px h-8 bg-white/[0.06]" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-emerald-400/80">{Math.round((totalDone / 106) * 100)}%</div>
+              <div className="text-2xl font-bold text-orange-400/90 tabular-nums">{Math.round((totalDone / 106) * 100)}%</div>
               <div className="text-[11px] text-slate-600 mt-0.5">Complete</div>
             </div>
           </div>

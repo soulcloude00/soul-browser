@@ -150,22 +150,22 @@ function PreviewBox({ type }: { type: string }) {
           <span className="ml-auto text-slate-700">zsh</span>
         </div>
         <div className="space-y-1 flex-1 overflow-hidden">
-          <div className="text-slate-600"><span className="text-emerald-400/80">➜</span> <span className="text-cyan-400/80">~</span> curl -I https://api.github.com</div>
+          <div className="text-slate-600"><span className="text-orange-400/80">➜</span> <span className="text-slate-500">~</span> curl -I https://api.github.com</div>
           <div className="text-slate-600 pl-4">HTTP/2 200</div>
           <div className="text-slate-600 pl-4">server: GitHub.com</div>
           <div className="text-slate-600 pl-4">content-type: application/json</div>
           <div className="text-slate-600 pl-4">x-ratelimit-limit: 60</div>
           <div className="text-slate-600 pl-4">...</div>
-          <div className="text-slate-600 mt-2"><span className="text-emerald-400/80">➜</span> <span className="text-cyan-400/80">~</span> <span className="animate-pulse text-slate-500">█</span></div>
+          <div className="text-slate-600 mt-2"><span className="text-orange-400/80">➜</span> <span className="text-slate-500">~</span> <span className="animate-pulse text-slate-500">█</span></div>
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2">
           {[
-            { val: '200ms', label: 'Latency', color: 'text-emerald-400/80' },
-            { val: '12KB', label: 'Size', color: 'text-sky-400/80' },
-            { val: 'H2', label: 'Protocol', color: 'text-violet-400/80' },
+            { val: '200ms', label: 'Latency' },
+            { val: '12KB', label: 'Size' },
+            { val: 'H2', label: 'Protocol' },
           ].map((s) => (
             <div key={s.label} className="bg-white/[0.02] rounded-lg p-2 text-center border border-white/[0.03]">
-              <div className={`${s.color} font-semibold text-[12px]`}>{s.val}</div>
+              <div className="text-orange-400/90 font-semibold text-[12px] tabular-nums">{s.val}</div>
               <div className="text-[10px] text-slate-700">{s.label}</div>
             </div>
           ))}
@@ -224,11 +224,11 @@ export default function Showcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-4 text-balance">
-            Three <span className="gradient-text">pillars</span>
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-4 text-balance">
+            Three <span className="text-orange-400">pillars</span>
           </h2>
-          <p className="text-[14px] text-slate-500 max-w-lg mx-auto leading-[1.7]">
-            Try the AI demo. Type a message and see how Soul responds - all simulated locally.
+          <p className="text-base text-slate-400 max-w-lg mx-auto leading-[1.6]">
+            Try the live AI demo. Type a message and watch Soul respond, simulated locally.
           </p>
         </motion.div>
 

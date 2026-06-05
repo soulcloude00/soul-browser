@@ -7,37 +7,21 @@ const layers = [
     title: 'SwiftUI Chrome',
     subtitle: 'RootView, Toolbar, Sidebar, AIPanel, Settings',
     icon: Layers,
-    accent: 'from-violet-500/10 to-violet-600/5',
-    border: 'border-violet-500/10',
-    text: 'text-violet-300/80',
-    dot: 'bg-violet-400',
   },
   {
     title: 'ObjC Bridge',
     subtitle: 'SoulBrowserView header: pure ObjC, Swift-facing',
     icon: ArrowRightLeft,
-    accent: 'from-orange-500/10 to-orange-600/5',
-    border: 'border-orange-500/10',
-    text: 'text-orange-300/80',
-    dot: 'bg-orange-400',
   },
   {
     title: 'CEF Engine',
     subtitle: 'Chromium 148, CEF 148, MetalRenderHandler',
     icon: Monitor,
-    accent: 'from-emerald-500/10 to-emerald-600/5',
-    border: 'border-emerald-500/10',
-    text: 'text-emerald-300/80',
-    dot: 'bg-emerald-400',
   },
   {
     title: 'Native macOS',
     subtitle: 'AppKit, NSRunLoop, NSVisualEffectView, Liquid Glass',
     icon: Sparkles,
-    accent: 'from-sky-500/10 to-sky-600/5',
-    border: 'border-sky-500/10',
-    text: 'text-sky-300/80',
-    dot: 'bg-sky-400',
   },
 ]
 
@@ -55,10 +39,10 @@ export default function Architecture() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.02em] leading-[1.1] text-white mb-5 text-balance">
-            Native meets <span className="gradient-text">Chromium</span>
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
+            Native meets <span className="text-orange-400">Chromium</span>
           </h2>
-          <p className="text-base text-slate-500 max-w-xl leading-[1.7]">
+          <p className="text-base text-slate-400 max-w-xl leading-[1.6]">
             Soul bridges the best of both worlds: the fluidity of SwiftUI with the compatibility of a real Chromium engine.
           </p>
         </motion.div>
@@ -72,21 +56,19 @@ export default function Architecture() {
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="relative"
             >
-              <div className={`flex items-center gap-4 p-4 rounded-2xl border ${layer.border} bg-gradient-to-r ${layer.accent} backdrop-blur-sm`}>
-                <div className="relative">
-                  <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
-                    <layer.icon size={16} strokeWidth={1.5} className={layer.text} />
-                  </div>
-                  <div className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full ${layer.dot} glow-dot`} />
+              <div className="group flex items-center gap-4 p-4 rounded-2xl panel">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-orange-500/[0.06] border border-orange-500/15 flex-shrink-0">
+                  <layer.icon size={17} strokeWidth={1.75} className="text-orange-400" />
                 </div>
-                <div>
-                  <h3 className="text-[14px] font-semibold text-white/90">{layer.title}</h3>
-                  <p className="text-[12px] text-slate-500 mt-0.5">{layer.subtitle}</p>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-white/90">{layer.title}</h3>
+                  <p className="text-xs text-slate-500 mt-0.5 font-mono tnum truncate">{layer.subtitle}</p>
                 </div>
+                <span className="ml-auto text-xs font-mono text-slate-700 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
               </div>
               {i < layers.length - 1 && (
-                <div className="flex justify-center py-1">
-                  <div className="w-px h-4 bg-gradient-to-b from-white/10 to-transparent" />
+                <div className="flex pl-9 py-1">
+                  <div className="w-px h-4 bg-white/10" />
                 </div>
               )}
             </motion.div>
@@ -102,11 +84,11 @@ export default function Architecture() {
           {[
             { label: 'SwiftUI + AppKit', desc: 'Native macOS chrome' },
             { label: 'CEF 148', desc: 'Chromium 148, arm64' },
-            { label: '6 Processes', desc: 'Main + GPU + Renderer + Helpers' },
+            { label: '6 Processes', desc: 'Main, GPU, Renderer, Helpers' },
           ].map((item) => (
-            <div key={item.label} className="text-center p-5 rounded-2xl glass-card">
-              <h4 className="text-[13px] font-semibold text-white/80 mb-1">{item.label}</h4>
-              <p className="text-[12px] text-slate-500">{item.desc}</p>
+            <div key={item.label} className="p-5 rounded-2xl panel">
+              <h4 className="text-sm font-semibold text-white/85 mb-1">{item.label}</h4>
+              <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </motion.div>

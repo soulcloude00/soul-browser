@@ -14,7 +14,7 @@ export default function Footer() {
                   <path d="M7 2C4.23858 2 2 4.23858 2 7C2 9.37733 3.65914 11.3671 5.88267 11.8747L9.17157 8.58579C9.54665 8.21071 10.0554 8 10.5858 8H11.9C11.9656 7.67689 12 7.34247 12 7C12 4.23858 9.76142 2 7 2Z" fill="#fb923c" opacity="0.7"/>
                 </svg>
               </div>
-              <span className="font-semibold text-[15px] text-white/90">Soul</span>
+              <span className="font-display font-semibold text-[16px] text-white/90">Soul</span>
             </div>
             <p className="text-sm text-slate-500 max-w-sm leading-[1.7]">
               A native macOS AI browser built with SwiftUI, AppKit, and Chromium.
