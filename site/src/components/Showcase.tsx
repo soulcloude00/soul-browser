@@ -486,21 +486,60 @@ export default function Showcase() {
             </AnimatePresence>
           </div>
 
-          {/* Right: Preview - dark device screen on the light page */}
+          {/* Right: Preview - Native macOS Window Mockup */}
           <div className="relative">
-            <div className="relative rounded-2xl border border-zinc-900/10 dark:border-white/10 bg-[#14130f] dark:bg-[#151412] overflow-hidden shadow-[0_30px_60px_-24px_rgba(20,19,15,0.4)] dark:shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)] h-[360px] transition-colors duration-300">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, x: 12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -12 }}
-                  transition={{ duration: 0.25 }}
-                  className="h-full"
-                >
-                  <PreviewBox type={active.preview} />
-                </motion.div>
-              </AnimatePresence>
+            <div className="relative rounded-2xl border border-zinc-900/10 dark:border-white/10 bg-white dark:bg-[#0c0b09] overflow-hidden shadow-[0_30px_60px_-24px_rgba(20,19,15,0.4)] dark:shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)] h-[400px] flex transition-colors duration-300">
+              
+              {/* Left: Main Web View Area */}
+              <div className="flex-1 flex flex-col bg-[#f8f7f4] dark:bg-[#12110e] transition-colors">
+                {/* Unified Titlebar */}
+                <div className="h-10 flex items-center px-4 border-b border-black/5 dark:border-white/5 gap-3 shrink-0">
+                  <div className="flex gap-1.5 opacity-80">
+                    <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-black/10 dark:border-transparent" />
+                    <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-black/10 dark:border-transparent" />
+                    <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-black/10 dark:border-transparent" />
+                  </div>
+                  <div className="flex-1 flex justify-center">
+                    <div className="px-3 py-1 bg-black/5 dark:bg-white/5 rounded-md text-[10px] font-medium text-zinc-500 font-mono shadow-inner">
+                      https://github.com/soulcloude00
+                    </div>
+                  </div>
+                  <div className="w-12" /> {/* Spacer for centering */}
+                </div>
+                
+                {/* Fake Web Content */}
+                <div className="flex-1 p-6 relative overflow-hidden">
+                  <div className="w-3/4 h-6 bg-zinc-200 dark:bg-white/10 rounded-lg mb-4" />
+                  <div className="w-full h-3 bg-zinc-100 dark:bg-white/5 rounded mb-2" />
+                  <div className="w-5/6 h-3 bg-zinc-100 dark:bg-white/5 rounded mb-2" />
+                  <div className="w-full h-3 bg-zinc-100 dark:bg-white/5 rounded mb-6" />
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="h-24 bg-zinc-100 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5" />
+                    <div className="h-24 bg-zinc-100 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5" />
+                  </div>
+                  
+                  {/* Subtle fade out at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f8f7f4] dark:from-[#12110e] to-transparent pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Right: Spatial Sidebar (Liquid Glass) */}
+              <div className="w-[280px] border-l border-black/10 dark:border-white/10 bg-white/70 dark:bg-black/40 backdrop-blur-2xl flex flex-col transition-colors z-10 shrink-0">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -12 }}
+                    transition={{ duration: 0.25 }}
+                    className="h-full"
+                  >
+                    <PreviewBox type={active.preview} />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
             </div>
           </div>
         </motion.div>
