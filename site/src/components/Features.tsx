@@ -78,17 +78,17 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
     >
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full h-full text-left relative p-5 rounded-2xl panel overflow-hidden hover:-translate-y-0.5 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-white/10"
+        className="w-full h-full text-left relative p-5 rounded-2xl panel overflow-hidden hover:-translate-y-0.5 active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-zinc-900/15"
       >
         <div className="relative">
           <div className="flex items-start justify-between mb-4">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/[0.07] border border-orange-500/15 flex items-center justify-center transition-colors duration-300 group-hover:bg-orange-500/[0.12]">
-              <feature.icon size={18} strokeWidth={1.75} className="text-orange-400" />
+            <div className="w-10 h-10 rounded-xl bg-orange-600/10 border border-orange-600/20 flex items-center justify-center transition-colors duration-300 group-hover:bg-orange-600/15">
+              <feature.icon size={18} strokeWidth={1.75} className="text-orange-600" />
             </div>
-            <span className="font-mono text-[10px] text-slate-700 tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+            <span className="font-mono text-[10px] text-zinc-400 tabular-nums">{String(index + 1).padStart(2, '0')}</span>
           </div>
-          <h3 className="font-display text-[15px] font-medium text-white/90 mb-1.5">{feature.title}</h3>
-          <p className="text-[12.5px] text-slate-500 leading-[1.55]">{feature.short}</p>
+          <h3 className="font-display text-[15px] font-medium text-zinc-900 mb-1.5">{feature.title}</h3>
+          <p className="text-[12.5px] text-zinc-500 leading-[1.55]">{feature.short}</p>
 
           <AnimatePresence>
             {expanded && (
@@ -99,14 +99,14 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="overflow-hidden"
               >
-                <div className="pt-3 mt-3 border-t border-white/[0.06]">
-                  <p className="text-[12.5px] text-slate-400 leading-[1.65]">{feature.full}</p>
+                <div className="pt-3 mt-3 border-t border-zinc-900/10">
+                  <p className="text-[12.5px] text-zinc-600 leading-[1.65]">{feature.full}</p>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div className="mt-3 flex items-center gap-1 text-[11px] text-slate-600 group-hover:text-orange-400/80 transition-colors">
+          <div className="mt-3 flex items-center gap-1 text-[11px] text-zinc-500 group-hover:text-orange-600 transition-colors">
             <span>{expanded ? 'Less' : 'Details'}</span>
             <ChevronRight size={12} className={`transition-transform duration-300 ${expanded ? 'rotate-90' : 'group-hover:translate-x-0.5'}`} />
           </div>
@@ -130,10 +130,10 @@ export default function Features() {
           transition={{ duration: 0.6 }}
           className="max-w-2xl mb-14"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
-            Built for the way <span className="text-orange-400">you</span> work
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] mb-5 text-balance">
+            Built for the way <span className="text-orange-600">you</span> work
           </h2>
-          <p className="text-base text-slate-400 max-w-md leading-[1.6]">
+          <p className="text-base text-zinc-600 max-w-md leading-[1.6]">
             Eight native systems, each crafted for macOS power users. Tap a card to expand.
           </p>
         </motion.div>

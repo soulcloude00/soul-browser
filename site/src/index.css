@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --paper: #ece9e2;
+    --ink: #14130f;
+    --muted: #6f6b62;
+    --line: rgba(20, 19, 15, 0.12);
+    --line-strong: rgba(20, 19, 15, 0.22);
+    --accent: #d4400a;
+  }
   html {
     scroll-behavior: smooth;
   }
@@ -11,31 +19,31 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.011em;
+    background: var(--paper);
+    color: var(--ink);
   }
   ::selection {
-    background-color: rgba(251, 146, 60, 0.22);
+    background-color: var(--accent);
     color: #fff;
   }
-  /* Tabular figures for all numeric/metric contexts */
   .tnum {
     font-variant-numeric: tabular-nums;
   }
-  /* Custom scrollbar - subtle, on-brand */
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(20, 19, 15, 0.18);
     border-radius: 999px;
     border: 3px solid transparent;
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(20, 19, 15, 0.3);
     background-clip: padding-box;
   }
 }
@@ -45,84 +53,71 @@
     text-wrap: balance;
   }
 
-  /* Glass surfaces - frosted, edge-refracted (skill 5: inner border + inner highlight, no outer glow) */
+  /* Light Swiss surfaces - solid white cards, hairline rules, no glass/glow */
   .glass {
-    background: rgba(255, 255, 255, 0.025);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--line);
   }
   .glass-strong {
-    background: rgba(18, 18, 24, 0.6);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 40px -16px rgba(0, 0, 0, 0.5);
+    background: rgba(252, 251, 248, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
   }
-  /* Card surface - solid-ish panel, tinted shadow, no neon */
+  /* Card surface - solid paper-white panel with hairline border */
   .panel {
-    background: rgba(255, 255, 255, 0.018);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #fbfaf7;
+    border: 1px solid var(--line);
+    transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .panel:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--line-strong);
+    background: #ffffff;
   }
-  /* Legacy alias kept for components still referencing glass-card */
   .glass-card {
-    background: rgba(255, 255, 255, 0.018);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #fbfaf7;
+    border: 1px solid var(--line);
+    transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--line-strong);
+    background: #ffffff;
   }
 
-  /* Single accent text treatment - restrained, not rainbow gradient */
+  /* Single accent */
   .gradient-text {
-    color: #fb923c;
+    color: var(--accent);
   }
   .gradient-text-hero {
-    color: #f8fafc;
-  }
-  /* Hairline accent underline for emphasis without gradient slop */
-  .accent-bar {
-    box-shadow: inset 0 -0.32em 0 rgba(251, 146, 60, 0.16);
+    color: var(--ink);
   }
 
-  /* Noise texture */
-  .noise {
-    position: relative;
-  }
-  .noise::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
-    pointer-events: none;
-    opacity: 0.6;
-    mix-blend-mode: overlay;
-  }
-
-  /* Dot pattern */
+  /* Dot pattern - ink dots on paper */
   .dots {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(20,19,15,0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
   }
 
-  /* Hairline grid lines used to organize real content (skill: only when structural) */
+  /* Hairline grid - structural Swiss rules */
   .grid-lines {
     background-image:
-      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 64px 64px;
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  /* Mono label - structural eyebrow */
+  .mono-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
 }
 

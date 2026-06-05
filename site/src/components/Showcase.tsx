@@ -240,15 +240,15 @@ export default function Showcase() {
         >
           {/* Left: Tab content */}
           <div className="space-y-4">
-            <div className="flex gap-1.5 p-1 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+            <div className="flex gap-1.5 p-1 rounded-xl bg-zinc-900/[0.04] border border-zinc-900/10">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10 ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-900/15 ${
                     activeTab === tab.id
-                      ? 'bg-white/[0.06] text-white'
-                      : 'text-slate-600 hover:text-slate-300'
+                      ? 'bg-white text-[#14130f] shadow-[0_2px_8px_-4px_rgba(20,19,15,0.25)]'
+                      : 'text-zinc-500 hover:text-zinc-800'
                   }`}
                 >
                   <tab.icon size={13} />
@@ -266,12 +266,12 @@ export default function Showcase() {
                 transition={{ duration: 0.25 }}
                 className="space-y-4"
               >
-                <h3 className="text-lg font-bold text-white/90">{active.title}</h3>
-                <p className="text-[13px] text-slate-500 leading-[1.7]">{active.description}</p>
+                <h3 className="font-display text-xl font-semibold text-[#14130f]">{active.title}</h3>
+                <p className="text-[13px] text-zinc-600 leading-[1.7]">{active.description}</p>
                 <ul className="space-y-2 pt-1">
                   {active.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2 text-[12px] text-slate-400">
-                      <div className="w-[4px] h-[4px] rounded-full bg-orange-400/50 flex-shrink-0" />
+                    <li key={h} className="flex items-center gap-2 text-[12px] text-zinc-600">
+                      <div className="w-[4px] h-[4px] rounded-full bg-orange-600 flex-shrink-0" />
                       {h}
                     </li>
                   ))}
@@ -280,10 +280,9 @@ export default function Showcase() {
             </AnimatePresence>
           </div>
 
-          {/* Right: Preview */}
+          {/* Right: Preview - dark device screen on the light page */}
           <div className="relative">
-            <div className="absolute -inset-5 bg-gradient-to-br from-orange-500/[0.05] via-transparent to-violet-500/[0.03] blur-3xl rounded-[2.5rem]" />
-            <div className="relative rounded-2xl border border-white/[0.06] bg-[#0c0c12] overflow-hidden shadow-2xl shadow-black/50 h-[360px]">
+            <div className="relative rounded-2xl border border-zinc-900/10 bg-[#14130f] overflow-hidden shadow-[0_30px_60px_-24px_rgba(20,19,15,0.4)] h-[360px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}

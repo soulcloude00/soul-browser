@@ -39,10 +39,10 @@ export default function Architecture() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
-            Native meets <span className="text-orange-400">Chromium</span>
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] mb-5 text-balance">
+            Native meets <span className="text-orange-600">Chromium</span>
           </h2>
-          <p className="text-base text-slate-400 max-w-xl leading-[1.6]">
+          <p className="text-base text-zinc-600 max-w-xl leading-[1.6]">
             Soul bridges the best of both worlds: the fluidity of SwiftUI with the compatibility of a real Chromium engine.
           </p>
         </motion.div>
@@ -57,18 +57,18 @@ export default function Architecture() {
               className="relative"
             >
               <div className="group flex items-center gap-4 p-4 rounded-2xl panel">
-                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-orange-500/[0.06] border border-orange-500/15 flex-shrink-0">
-                  <layer.icon size={17} strokeWidth={1.75} className="text-orange-400" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-orange-600/10 border border-orange-600/20 flex-shrink-0">
+                  <layer.icon size={17} strokeWidth={1.75} className="text-orange-600" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-white/90">{layer.title}</h3>
-                  <p className="text-xs text-slate-500 mt-0.5 font-mono tnum truncate">{layer.subtitle}</p>
+                  <h3 className="text-sm font-semibold text-zinc-900">{layer.title}</h3>
+                  <p className="text-xs text-zinc-500 mt-0.5 font-mono tnum truncate">{layer.subtitle}</p>
                 </div>
-                <span className="ml-auto text-xs font-mono text-slate-700 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span className="ml-auto text-xs font-mono text-zinc-400 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
               </div>
               {i < layers.length - 1 && (
                 <div className="flex pl-9 py-1">
-                  <div className="w-px h-4 bg-white/10" />
+                  <div className="w-px h-4 bg-zinc-900/15" />
                 </div>
               )}
             </motion.div>
@@ -87,8 +87,8 @@ export default function Architecture() {
             { label: '6 Processes', desc: 'Main, GPU, Renderer, Helpers' },
           ].map((item) => (
             <div key={item.label} className="p-5 rounded-2xl panel">
-              <h4 className="text-sm font-semibold text-white/85 mb-1">{item.label}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+              <h4 className="text-sm font-semibold text-zinc-900 mb-1">{item.label}</h4>
+              <p className="text-xs text-zinc-500 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </motion.div>

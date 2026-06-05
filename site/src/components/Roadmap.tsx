@@ -84,15 +84,15 @@ function PartCard({ part, index }: { part: typeof parts[0]; index: number; key?:
       className="panel p-6 rounded-2xl"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white/85">{part.title}</h3>
-        <span className="text-[11px] font-mono tabular-nums text-orange-400/90 bg-orange-500/[0.08] px-2 py-0.5 rounded-md border border-orange-500/15">
+        <h3 className="text-sm font-semibold text-zinc-900">{part.title}</h3>
+        <span className="text-[11px] font-mono tabular-nums text-orange-700 bg-orange-600/10 px-2 py-0.5 rounded-md border border-orange-600/20">
           {part.done}/{part.items.length}
         </span>
       </div>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
         {part.items.map((item) => (
-          <li key={item} className="flex items-center gap-2 text-xs text-slate-500">
-            <CheckCircle2 size={11} className="text-orange-400/50 flex-shrink-0" />
+          <li key={item} className="flex items-center gap-2 text-xs text-zinc-600">
+            <CheckCircle2 size={11} className="text-orange-600/70 flex-shrink-0" />
             <span className="truncate">{item}</span>
           </li>
         ))}
@@ -117,27 +117,27 @@ export default function Roadmap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-white mb-5 text-balance">
-            <span className="text-orange-400 tabular-nums">106</span> features planned
+          <h2 className="font-display font-semibold text-4xl md:text-5xl tracking-[-0.03em] leading-[1.02] text-[#14130f] mb-5 text-balance">
+            <span className="text-orange-600 tabular-nums">106</span> features planned
           </h2>
-          <p className="text-base text-slate-400 max-w-xl mx-auto leading-[1.6] mb-10">
+          <p className="text-base text-zinc-600 max-w-xl mx-auto leading-[1.6] mb-10">
             A roadmap spanning architecture, AI, performance, privacy, and developer tooling.
           </p>
 
-          <div className="inline-flex items-center gap-5 px-7 py-4 rounded-2xl glass-strong border border-white/[0.06]">
+          <div className="inline-flex items-center gap-5 px-7 py-4 rounded-2xl panel">
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-400/90 tabular-nums">{totalDone}</div>
-              <div className="text-[11px] text-slate-600 mt-0.5">Shipped</div>
+              <div className="text-2xl font-bold text-orange-600 tabular-nums">{totalDone}</div>
+              <div className="text-[11px] text-zinc-500 mt-0.5">Shipped</div>
             </div>
-            <div className="w-px h-8 bg-white/[0.06]" />
+            <div className="w-px h-8 bg-zinc-900/10" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-white/80 tabular-nums">106</div>
-              <div className="text-[11px] text-slate-600 mt-0.5">Planned</div>
+              <div className="text-2xl font-bold text-zinc-900 tabular-nums">106</div>
+              <div className="text-[11px] text-zinc-500 mt-0.5">Planned</div>
             </div>
-            <div className="w-px h-8 bg-white/[0.06]" />
+            <div className="w-px h-8 bg-zinc-900/10" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-400/90 tabular-nums">{Math.round((totalDone / 106) * 100)}%</div>
-              <div className="text-[11px] text-slate-600 mt-0.5">Complete</div>
+              <div className="text-2xl font-bold text-orange-600 tabular-nums">{Math.round((totalDone / 106) * 100)}%</div>
+              <div className="text-[11px] text-zinc-500 mt-0.5">Complete</div>
             </div>
           </div>
         </motion.div>
@@ -159,7 +159,7 @@ export default function Roadmap() {
             href="https://github.com/soulcloude/mori-browser/blob/main/ROADMAP.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-slate-400 hover:text-white rounded-xl transition-colors border border-white/[0.05] hover:border-white/10 bg-white/[0.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/10"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-zinc-700 hover:text-[#14130f] rounded-xl transition-colors border border-zinc-900/15 hover:border-zinc-900/30 bg-white/40 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-900/15"
           >
             <Rocket size={13} />
             <span>View full roadmap on GitHub</span>
