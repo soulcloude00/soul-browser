@@ -1,44 +1,88 @@
 import SwiftUI
 
-/// A full set of Soul color tokens for one appearance, transcribed from
-/// `~/Developer/soul/src/app/globals.css` (`:root` = light, `.dark` = dark).
+/// A comprehensive set of semantic color tokens defining the Soul visual appearance.
+/// Extracted and transcribed directly from `globals.css` into native Swift structs,
+/// ensuring 1:1 parity between the web UI and the native macOS Chrome.
 struct ThemePalette {
-    // `var` (not `let`) so a gradient theme can layer a derived accent over the
-    // brand-driven tokens via `applying(theme:scheme:)`. The `static let`
-    // light/dark literals below still build through the memberwise init.
+    // Note: Properties are `var` rather than `let` to allow dynamic theming engines
+    // (such as `GradientEngine`) to layer a derived accent or background wash over the
+    // base tokens dynamically via the `applying(theme:scheme:)` modifier.
+
+    /// The primary background color of the application window.
     var background: TokenColor
+    /// The primary foreground (text) color.
     var foreground: TokenColor
+    
+    /// Background color for floating cards and elevated containers.
     var card: TokenColor
+    /// Foreground text color inside cards.
     var cardForeground: TokenColor
+    
+    /// Background color for dropdowns, tooltips, and popovers.
     var popover: TokenColor
+    /// Foreground text color inside popovers.
     var popoverForeground: TokenColor
+    
+    /// The primary brand color, used for highly emphasized actions (e.g. primary buttons).
     var primary: TokenColor
+    /// Text color drawn on top of the `primary` background.
     var primaryForeground: TokenColor
+    
+    /// Secondary accent color for less prominent interactive elements.
     var secondary: TokenColor
+    /// Text color drawn on top of the `secondary` background.
     var secondaryForeground: TokenColor
+    
+    /// A subdued background for inactive or disabled states.
     var muted: TokenColor
+    /// Subdued text color for secondary labels and placeholders.
     var mutedForeground: TokenColor
+    
+    /// The active accent color, typically used for selections, toggles, or active tab indicators.
     var accent: TokenColor
+    /// Text color drawn on top of the `accent` background.
     var accentForeground: TokenColor
+    
+    /// Color indicating a destructive or dangerous action (e.g., delete buttons).
     var destructive: TokenColor
+    /// Text color drawn on top of the `destructive` background.
     var destructiveForeground: TokenColor
+    
+    /// Standard border color for UI dividers and strokes.
     var border: TokenColor
+    /// Border color specifically for input fields and text areas.
     var input: TokenColor
+    /// Color of the focus ring drawn around focused interactive elements.
     var ring: TokenColor
 
-    // Sidebar channel (own border/ring values, chroma-0 in dark).
+    // MARK: - Sidebar Channel
+    // The right-hand sidebar utilizes its own localized token set to maintain
+    // visual separation from the main web content view.
+
+    /// Background color of the right-hand translucent sidebar.
     var sidebar: TokenColor
+    /// Foreground text color within the sidebar.
     var sidebarForeground: TokenColor
+    /// Primary brand color within the sidebar context.
     var sidebarPrimary: TokenColor
+    /// Text on top of sidebar primary colored elements.
     var sidebarPrimaryForeground: TokenColor
+    /// Accent color used for selected tabs or active items in the sidebar.
     var sidebarAccent: TokenColor
+    /// Text on top of the sidebar accent colored elements.
     var sidebarAccentForeground: TokenColor
+    /// Border color used specifically within the sidebar.
     var sidebarBorder: TokenColor
+    /// Focus ring color used specifically within the sidebar.
     var sidebarRing: TokenColor
 
-    // Status tokens (used by badges / load states).
+    // MARK: - Status Indicators
+    
+    /// Color for informational badges or non-critical system messages.
     var statusInfoFg: TokenColor
+    /// Color for success states, completed downloads, or positive actions.
     var statusSuccessFg: TokenColor
+    /// Color for warnings, alerts, or incomplete/failing states.
     var statusWarningFg: TokenColor
 }
 
