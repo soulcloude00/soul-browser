@@ -5,6 +5,7 @@ import Features from './components/Features'
 import Architecture from './components/Architecture'
 import Showcase from './components/Showcase'
 import StoryComparison from './components/StoryComparison'
+import PowerUser from './components/PowerUser'
 import Roadmap from './components/Roadmap'
 import Footer from './components/Footer'
 import CommandPalette from './components/CommandPalette'
@@ -56,6 +57,7 @@ export default function App() {
           <Features />
           <Architecture />
           <Showcase />
+          <PowerUser />
           <StoryComparison />
           <Roadmap />
         </main>
