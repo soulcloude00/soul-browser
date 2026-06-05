@@ -12,7 +12,7 @@
     --accent: #d4400a;
   }
 
-  :root.dark {
+  html.dark {
     --paper: #0c0b09;
     --ink: #f5f3ee;
     --muted: #a19f96;
