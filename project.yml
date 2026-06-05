@@ -156,3 +156,12 @@ targets:
     postBuildScripts:
       - script: bash "$SRCROOT/Scripts/embed_cef_framework.sh"
         name: Embed CEF Framework
+
+  SoulTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: Soul
+
