@@ -109,8 +109,14 @@ final class SoulKeychain {
 
     // MARK: - Helpers
 
+    /// Checks environment variables to determine if the real macOS Keychain should be used.
+    /// Supports `SOUL_USE_REAL_KEYCHAIN` as defined in Roadmap Item #10, and legacy `MORI_USE_REAL_KEYCHAIN`.
     private var useRealKeychain: Bool {
-        let env = ProcessInfo.processInfo.environment["MORI_USE_REAL_KEYCHAIN"]
-        return env == "1" || env?.lowercased() == "true"
+        let processInfo = ProcessInfo.processInfo
+        let soulEnv = processInfo.environment["SOUL_USE_REAL_KEYCHAIN"]
+        let moriEnv = processInfo.environment["MORI_USE_REAL_KEYCHAIN"]
+        
+        return soulEnv == "1" || soulEnv?.lowercased() == "true" ||
+               moriEnv == "1" || moriEnv?.lowercased() == "true"
     }
 }
