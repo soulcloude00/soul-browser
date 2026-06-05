@@ -141,6 +141,20 @@ final class BrowserTab: NSObject, ObservableObject, Identifiable {
             name: NSNotification.Name("SoulConsoleMessageReceived"),
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlePowerThrottleChanged(_:)),
+            name: .soulPowerThrottleChanged,
+            object: nil
+        )
+    }
+
+    @objc private func handlePowerThrottleChanged(_ notification: Notification) {
+        guard isRealized, let userInfo = notification.userInfo else { return }
+        let throttled = userInfo["throttled"] as? Bool ?? false
+        let fps = throttled ? (userInfo["targetFPS"] as? Int ?? 30) : 0
+        
+        browserView.setFrameRateLimit(Int32(fps))
     }
 
     @objc private func handleConsoleMessage(_ notification: Notification) {

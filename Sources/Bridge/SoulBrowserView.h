@@ -138,6 +138,10 @@ typedef void (^SoulJavaScriptResultHandler)(id _Nullable result,
 /// Push the auto-PiP preference into this (already-loaded) page.
 - (void)applyAutoPiP:(BOOL)enabled;
 
+/// Cap the CEF renderer's maximum frame rate to reduce CPU/GPU usage (Low Power Mode).
+/// Setting to 0 restores the default (usually 60fps).
+- (void)setFrameRateLimit:(int)fps;
+
 /// Set the process-wide auto-PiP default applied to newly loaded pages.
 + (void)setAutoPiPEnabled:(BOOL)enabled;
 + (void)setAdBlockerEnabled:(BOOL)enabled;
