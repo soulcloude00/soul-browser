@@ -5,6 +5,7 @@ import SwiftUI
 struct RootView: View {
     @ObservedObject var store: BrowserStore
     @ObservedObject private var settings = BrowserSettings.shared
+    @ObservedObject private var onboarding = OnboardingTour.shared
     @Environment(\.colorScheme) private var systemScheme
 
     private var gradientTheme: GradientTheme { settings.gradientTheme }
@@ -33,6 +34,12 @@ struct RootView: View {
             .overlay {
                 if store.sessionResumption.detectedCrash {
                     SessionRestoreOverlay(store: store)
+                        .ignoresSafeArea()
+                }
+            }
+            .overlay {
+                if !onboarding.hasCompletedOnboarding {
+                    OnboardingView(tour: onboarding)
                         .ignoresSafeArea()
                 }
             }

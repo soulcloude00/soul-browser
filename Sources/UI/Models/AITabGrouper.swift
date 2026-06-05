@@ -35,6 +35,37 @@ final class AITabGrouper {
         }
     }
 
+    private func categorize(tab: BrowserTab) -> String {
+        let host = URL(string: tab.urlString)?.host?.lowercased() ?? ""
+        let text = "\(tab.title) \(tab.urlString)".lowercased()
+
+        if host.contains("github") || host.contains("gitlab") || host.contains("stackoverflow") || text.contains("docs") || text.contains("api") || text.contains("developer") {
+            return "dev"
+        }
+        if host.contains("slack") || host.contains("discord") || host.contains("x.com") || host.contains("twitter") || host.contains("linkedin") || host.contains("reddit") {
+            return "social"
+        }
+        if host.contains("amazon") || host.contains("shop") || host.contains("store") || text.contains("cart") || text.contains("checkout") {
+            return "shopping"
+        }
+        if host.contains("news") || host.contains("medium") || host.contains("substack") || text.contains("breaking") {
+            return "news"
+        }
+        if host.contains("youtube") || host.contains("netflix") || host.contains("spotify") || text.contains("video") || text.contains("music") {
+            return "entertainment"
+        }
+        if host.contains("scholar") || host.contains("arxiv") || host.contains("wikipedia") || text.contains("research") || text.contains("paper") {
+            return "research"
+        }
+        if host.contains("bank") || host.contains("stripe") || host.contains("paypal") || text.contains("invoice") || text.contains("finance") {
+            return "finance"
+        }
+        if host.contains("notion") || host.contains("linear") || host.contains("figma") || host.contains("docs.google") || text.contains("dashboard") {
+            return "work"
+        }
+        return "default"
+    }
+
     /// Uses the local LLM to cluster tabs automatically.
     func suggestGroupsWithAI(for tabs: [BrowserTab], completion: @escaping ([(name: String, emoji: String, tabIDs: [UUID])]) -> Void) {
         guard let endpoint = LLMConfigurator.shared.endpoints.first(where: \.isOnline) else {
