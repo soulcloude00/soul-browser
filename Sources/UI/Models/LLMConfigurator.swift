@@ -44,7 +44,10 @@ final class LLMConfigurator: ObservableObject {
 
     private func checkEndpoint(at index: Int) {
         let endpoint = endpoints[index]
-        guard let url = URL(string: "\(endpoint.url)/api/tags") else { return }
+        
+        let path = endpoint.type == .ollama ? "/api/tags" : "/v1/models"
+        guard let url = URL(string: "\(endpoint.url)\(path)") else { return }
+        
         var request = URLRequest(url: url)
         request.timeoutInterval = 3
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
@@ -53,9 +56,18 @@ final class LLMConfigurator: ObservableObject {
                 var updated = endpoint
                 updated.isOnline = (error == nil && (response as? HTTPURLResponse)?.statusCode == 200)
                 if let data,
-                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                   let models = json["models"] as? [[String: Any]] {
-                    updated.models = models.compactMap { $0["name"] as? String }
+                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    
+                    if endpoint.type == .ollama {
+                        if let models = json["models"] as? [[String: Any]] {
+                            updated.models = models.compactMap { $0["name"] as? String }
+                        }
+                    } else {
+                        // LM Studio / OpenAI format
+                        if let dataArray = json["data"] as? [[String: Any]] {
+                            updated.models = dataArray.compactMap { $0["id"] as? String }
+                        }
+                    }
                 }
                 self.endpoints[index] = updated
             }
