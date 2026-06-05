@@ -917,6 +917,17 @@ static NSHashTable<SoulBrowserView*>* g_all_views = nil;
   }
 }
 
+- (void)setFrameRateLimit:(int)fps {
+  if (!_browser) return;
+  if (fps > 0) {
+    NSString *js = [NSString stringWithFormat:@"window.__soulFPSLimit = %d; if (!window.__soulRAF) { window.__soulRAF = window.requestAnimationFrame; window.requestAnimationFrame = function(cb) { setTimeout(() => window.__soulRAF(cb), 1000 / window.__soulFPSLimit); }; }", fps];
+    _browser->GetMainFrame()->ExecuteJavaScript([js UTF8String], "", 0);
+  } else {
+    NSString *js = @"if (window.__soulRAF) { window.requestAnimationFrame = window.__soulRAF; delete window.__soulRAF; delete window.__soulFPSLimit; }";
+    _browser->GetMainFrame()->ExecuteJavaScript([js UTF8String], "", 0);
+  }
+}
+
 + (void)setAutoPiPEnabled:(BOOL)enabled {
   SoulSetAutoPiPEnabled(enabled);
 }
