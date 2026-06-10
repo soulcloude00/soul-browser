@@ -385,9 +385,9 @@ private struct FeatureRow: View {
                 .frame(width: 34, height: 34)
                 .background(
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
                             .fill(tint.opacity(0.12))
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
                             .strokeBorder(tint.opacity(0.25), lineWidth: 1)
                     }
                 )

@@ -738,14 +738,6 @@ void CefAppImpl::OnBeforeCommandLineProcessing(
     command_line->AppendSwitch("process-per-site");
     // Limit GPU memory to prevent runaway VRAM usage on hot pages.
     command_line->AppendSwitchWithValue("force-gpu-mem-available-mb", "128");
-
-    // ── Aggressive Memory Savings ──
-    // Disable site isolation to drastically reduce memory usage from cross-site iframes.
-    command_line->AppendSwitch("disable-site-isolation-trials");
-    // Limit V8 heap size to encourage garbage collection.
-    command_line->AppendSwitchWithValue("js-flags", "--max-old-space-size=256");
-    // Extensions consume memory, and we don't support them currently.
-    command_line->AppendSwitch("disable-extensions");
   }
 }
 
