@@ -191,6 +191,7 @@ struct OnboardingView: View {
                 )
         }
         .buttonStyle(.plain)
+        .scaleEffect(hoveringSkip ? 1.03 : 1.0)
         .onHover { hoveringSkip = $0 }
         .animation(Motion.state, value: hoveringSkip)
     }
@@ -235,11 +236,16 @@ struct OnboardingView: View {
                 .padding(.vertical, 11)
                 .background(
                     RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
-                        .fill(stage.tint.opacity(hoveringNext ? 0.9 : 1))
+                        .fill(LinearGradient(colors: [stage.tint.opacity(hoveringNext ? 0.9 : 1), stage.tint], startPoint: .top, endPoint: .bottom))
                 )
-                .shadow(color: stage.tint.opacity(0.3), radius: hoveringNext ? 16 : 9, y: hoveringNext ? 7 : 4)
+                .overlay(
+                    RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
+                        .strokeBorder(p.primaryForeground.color.opacity(0.15), lineWidth: 1)
+                )
+                .shadow(color: stage.tint.opacity(hoveringNext ? 0.4 : 0.25), radius: hoveringNext ? 16 : 8, y: hoveringNext ? 7 : 4)
             }
             .buttonStyle(.plain)
+            .scaleEffect(hoveringNext ? 1.02 : 1.0)
             .keyboardShortcut(.return, modifiers: [])
             .onHover { hoveringNext = $0 }
             .animation(Motion.state, value: hoveringNext)
@@ -378,8 +384,12 @@ private struct FeatureRow: View {
                 .foregroundStyle(tint)
                 .frame(width: 34, height: 34)
                 .background(
-                    RoundedRectangle(cornerRadius: 9, style: .continuous)
-                        .fill(tint.opacity(0.12))
+                    ZStack {
+                        RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
+                            .fill(tint.opacity(0.12))
+                        RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
+                            .strokeBorder(tint.opacity(0.25), lineWidth: 1)
+                    }
                 )
 
             VStack(alignment: .leading, spacing: 2) {
