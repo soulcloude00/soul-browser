@@ -733,11 +733,19 @@ void CefAppImpl::OnBeforeCommandLineProcessing(
     // ── Process / GPU limits ──
     // Cap renderer processes so idle sites share a process instead of each
     // spawning its own (default is unlimited → one per site-instance).
-    command_line->AppendSwitchWithValue("renderer-process-limit", "4");
+    command_line->AppendSwitchWithValue("renderer-process-limit", "2");
     // Coalesce same-origin tabs into a single renderer process.
     command_line->AppendSwitch("process-per-site");
     // Limit GPU memory to prevent runaway VRAM usage on hot pages.
-    command_line->AppendSwitchWithValue("force-gpu-mem-available-mb", "256");
+    command_line->AppendSwitchWithValue("force-gpu-mem-available-mb", "128");
+
+    // ── Aggressive Memory Savings ──
+    // Disable site isolation to drastically reduce memory usage from cross-site iframes.
+    command_line->AppendSwitch("disable-site-isolation-trials");
+    // Limit V8 heap size to encourage garbage collection.
+    command_line->AppendSwitchWithValue("js-flags", "--max-old-space-size=256");
+    // Extensions consume memory, and we don't support them currently.
+    command_line->AppendSwitch("disable-extensions");
   }
 }
 
