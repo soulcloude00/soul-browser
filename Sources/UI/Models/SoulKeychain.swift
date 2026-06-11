@@ -19,11 +19,16 @@ final class SoulKeychain {
             return true
         }
 
+        guard let passwordData = password.data(using: .utf8) else {
+            SoulLogger.logError(NSError(domain: "SoulKeychain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode password string"]), context: "Encoding password data")
+            return false
+        }
+
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
-            kSecValueData as String: password.data(using: .utf8)!
+            kSecValueData as String: passwordData
         ]
 
         SecItemDelete(query as CFDictionary)
@@ -76,11 +81,16 @@ final class SoulKeychain {
     func saveInternetPassword(account: String, password: String, server: String) -> Bool {
         guard useRealKeychain else { return true }
 
+        guard let passwordData = password.data(using: .utf8) else {
+            SoulLogger.logError(NSError(domain: "SoulKeychain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode internet password string"]), context: "Encoding password data")
+            return false
+        }
+
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrServer as String: server,
             kSecAttrAccount as String: account,
-            kSecValueData as String: password.data(using: .utf8)!
+            kSecValueData as String: passwordData
         ]
 
         SecItemDelete(query as CFDictionary)
