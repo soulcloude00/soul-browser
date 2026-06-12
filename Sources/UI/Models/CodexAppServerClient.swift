@@ -188,7 +188,24 @@ final class CodexBrowserAssistant: ObservableObject {
 
     private func ensureThread() async throws -> String {
         if let threadId { return threadId }
-        try await connection.connectIfNeeded()
+        
+        // Robust connection retry logic
+        var connectionError: Error?
+        for attempt in 1...3 {
+            do {
+                try await connection.connectIfNeeded()
+                connectionError = nil
+                break
+            } catch {
+                connectionError = error
+                SoulLogger.error("Codex connection attempt \(attempt) failed: \(error.localizedDescription)", category: SoulLogger.ai)
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+            }
+        }
+        if let error = connectionError {
+            throw error
+        }
+
         if modelOptions.isEmpty {
             try? await refreshModelCatalog()
         }
