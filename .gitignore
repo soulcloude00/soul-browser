@@ -35,3 +35,4 @@ tmp/
 # Downloaded/generated dependency archives and wrapper build products
 third_party/cef_minimal.tar.bz2
 third_party/cef/build/
+*.zip

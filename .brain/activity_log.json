@@ -257,5 +257,61 @@
     "category": "file_watcher",
     "summary": "~2 modified",
     "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T14:56:06.598506",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~2 modified",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T14:56:14.797107",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~3 modified",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:00:42.210605",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "+2 new, -2 removed",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:00:54.450139",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~2 modified",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:01:09.212958",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~1 modified",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:11:20.324568",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "+1 new",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:17:40.267935",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~1 modified",
+    "actor": "system"
+  },
+  {
+    "timestamp": "2026-06-12T15:21:44.365152",
+    "action": "reindexed",
+    "category": "file_watcher",
+    "summary": "~1 modified",
+    "actor": "system"
   }
 ]

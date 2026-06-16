@@ -186,6 +186,7 @@ struct OnboardingView: View {
                 .foregroundStyle(hoveringSkip ? p.foreground.color : p.mutedForeground.color)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
+                .contentShape(Capsule())
                 .background(
                     Capsule().fill(hoveringSkip ? p.foreground.color.opacity(0.08) : .clear)
                 )
@@ -209,6 +210,7 @@ struct OnboardingView: View {
                         .foregroundStyle(p.foreground.color)
                         .padding(.horizontal, 18)
                         .padding(.vertical, 11)
+                        .contentShape(RoundedRectangle(cornerRadius: Radius.button, style: .continuous))
                         .background(
                             RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
                                 .fill(hoveringBack ? p.foreground.color.opacity(0.08) : p.card.color.opacity(0.55))
@@ -234,6 +236,7 @@ struct OnboardingView: View {
                 .foregroundStyle(p.primaryForeground.color)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 11)
+                .contentShape(RoundedRectangle(cornerRadius: Radius.button, style: .continuous))
                 .background(
                     RoundedRectangle(cornerRadius: Radius.button, style: .continuous)
                         .fill(LinearGradient(colors: [stage.tint.opacity(hoveringNext ? 0.9 : 1), stage.tint], startPoint: .top, endPoint: .bottom))
@@ -364,6 +367,8 @@ private struct StepDots: View {
                     Capsule()
                         .fill(i == index ? tint : p.foreground.color.opacity(0.18))
                         .frame(width: i == index ? 22 : 7, height: 7)
+                        .padding(.vertical, 8)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
