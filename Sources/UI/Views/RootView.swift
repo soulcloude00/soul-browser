@@ -40,7 +40,6 @@ struct RootView: View {
             .overlay {
                 if !onboarding.hasCompletedOnboarding {
                     OnboardingView(tour: onboarding)
-                        .ignoresSafeArea()
                 }
             }
             .environment(\.palette, palette)

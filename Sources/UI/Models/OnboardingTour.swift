@@ -1,8 +1,6 @@
 import SwiftUI
 
-/// Interactive Tutorial / Onboarding Tour (Roadmap Item 92)
-/// Build an elegant SwiftUI onboarding experience that showcases the AI Panel,
-/// sidebar, and theme customizer.
+/// Interactive Tutorial / Onboarding Tour
 final class OnboardingTour: ObservableObject {
     static let shared = OnboardingTour()
 
@@ -11,41 +9,46 @@ final class OnboardingTour: ObservableObject {
     }
     @Published var currentStep = 0
 
-    let steps: [OnboardingStep] = [
-        OnboardingStep(title: "Welcome to Soul", description: "The local-first AI browser for macOS.", icon: "sparkles"),
-        OnboardingStep(title: "AI Panel", description: "Press ⌘J to open the AI assistant. It runs entirely on your device.", icon: "brain"),
-        OnboardingStep(title: "Sidebar", description: "Organize tabs into workspaces, folders, and pinned grids.", icon: "sidebar.left"),
-        OnboardingStep(title: "Theme Customizer", description: "Choose from gradient presets or craft your own with OKLCH.", icon: "paintbrush"),
-        OnboardingStep(title: "Privacy First", description: "Built-in tracker blocking, fingerprint protection, and private sessions.", icon: "shield.checkerboard"),
-        OnboardingStep(title: "You're Ready", description: "Start browsing with Soul.", icon: "arrow.right.circle")
-    ]
+    enum Step: Int, CaseIterable {
+        case welcome = 0
+        case services
+        case searchEngine
+        case dataImport
+        case defaultBrowser
+        case finish
+    }
 
     private init() {
         hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "soul.completedOnboarding")
     }
 
     func nextStep() {
-        if currentStep < steps.count - 1 {
-            currentStep += 1
+        if currentStep < Step.allCases.count - 1 {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                currentStep += 1
+            }
         } else {
             complete()
         }
     }
+    
+    func previousStep() {
+        if currentStep > 0 {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                currentStep -= 1
+            }
+        }
+    }
 
     func complete() {
-        hasCompletedOnboarding = true
-        currentStep = 0
+        withAnimation {
+            hasCompletedOnboarding = true
+            currentStep = 0
+        }
     }
 
     func reset() {
         hasCompletedOnboarding = false
         currentStep = 0
     }
-}
-
-struct OnboardingStep: Identifiable {
-    let id = UUID()
-    let title: String
-    let description: String
-    let icon: String
 }
